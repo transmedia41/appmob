@@ -1,8 +1,9 @@
 angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-directive'])
 
-.controller('MapController', function ($scope, mapboxMapId, mapboxAccessToken) {
+.controller('MapController', function ($scope, mapboxMapId, mapboxAccessToken, $ionicLoading) {
     
-console.log('salut')
+$ionicLoading.show({template:"<img src='img/hydromerta.png' height='50px'/><p class='hydro'>Coming soon...</p>"});
+
     var mapboxTileLayer = "http://api.tiles.mapbox.com/v4/" + mapboxMapId;
     mapboxTileLayer = mapboxTileLayer + "/{z}/{x}/{y}.png?access_token=" + mapboxAccessToken;
     $scope.mapDefaults = {

@@ -2,7 +2,7 @@
 
 ###Pour l'utiliser :
 
-- `git clone [git-repo-url]`
+- `git clone git@github.com:transmedia41/hydromerta-appmob.git`
 
 - `cd projectFolder`
 
