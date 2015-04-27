@@ -6,5 +6,10 @@ angular.module('hydromerta')
                         url: '/map',
                         templateUrl: 'templates/map.html'
                     })
-            $urlRouterProvider.otherwise("/map");
+                    
+                     .state('register', {
+                        url: '/register',
+                        templateUrl: 'templates/register.html'
+                    })
+            $urlRouterProvider.otherwise("/register");
         });
