@@ -15,9 +15,281 @@ $royal:                           #886aea !default;
 $dark:                            #444 !default;
 */
 
+
+//== Colors
+//
+//## Gray and brand colors for use across Bootstrap.
+
+$gray-base:              #000;
+$gray-darker:            lighten($gray-base, 13.5%); // #222
+$gray-dark:              lighten($gray-base, 20%);   // #333
+$gray:                   lighten($gray-base, 33.5%); // #555
+$gray-light:             lighten($gray-base, 46.7%); // #777
+$gray-lighter:           lighten($gray-base, 93.5%); // #eee
+
+$brand-primary:         darken(#428bca, 6.5%); // #337ab7
+$brand-success:         #5cb85c;
+$brand-info:            #5bc0de;
+$brand-danger:          #d9534f;
+
+//## Hydromerta corporate
+
+
+$hydro-warning:			#9e1915;
+
+$hydro-orange:			#ea590c;
+
+$hydro-black:			#2b1a11;
+$hydro-blue:			#14333d;
+$hydro-blue-dark:		#06323c;
+$hydro-blue-middle:		#3e758e;
+$hydro-blue-light:		#49a9cf;
+
+$hydro-white-text:		#eeece1;
+
+
+$hydro-black-nav:		#333033;
+$hydro-red:				#9e1915;
+
+$hydro-braun:			#817874;
+$hydro-braun-light:		lighten($gray-base, 80%);
+
+
+
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+.leaflet-control {
+    visibility: hidden;
+}
+
+
+$fairview:				'fairview_regular';
+$hoverage:				'hoverage';
+$icomoon:				'icomoon';
+
+@font-face {
+    font-family: 'icomoon';
+    src:url('../fonts/icomoon.eot?-8g7j8c');
+    src:url('../fonts/icomoon.eot?#iefix-8g7j8c') format('embedded-opentype'),
+        url('../fonts/icomoon.woff?-8g7j8c') format('woff'),
+        url('../fonts/icomoon.ttf?-8g7j8c') format('truetype'),
+        url('../fonts/icomoon.svg?-8g7j8c#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'fairview_regular';
+    src:url('../fonts/fairview_regular-webfont.eot');
+    src:url('../fonts/fairview_regular-webfont.eot') format('embedded-opentype'),
+        url('../fonts/fairview_regular-webfont.woff') format('woff'),
+        url('../fonts/fairview_regular-webfont.ttf') format('truetype'),
+        url('../fonts/fairview_regular-webfont.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'fairview_smallcaps';
+    src:url('../fonts/fairview_smallcaps-webfont.eot');
+    src:url('../fonts/fairview_smallcaps-webfont.eot') format('embedded-opentype'),
+        url('../fonts/fairview_smallcaps-webfont.woff') format('woff'),
+        url('../fonts/fairview_smallcaps-webfont.ttf') format('truetype'),
+        url('../fonts/fairview_smallcaps-webfont.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'hoverage';
+    src:url('../fonts/hoverage-webfont.eot');
+    src:url('../fonts/hoverage-webfont.eot') format('embedded-opentype'),
+        url('../fonts/hoverage-webfont.woff') format('woff'),
+        url('../fonts/hoverage-webfont.ttf') format('truetype'),
+        url('../fonts/hoverage-webfont.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'hoverage_vintage';
+    src:url('../fonts/hoverage_vintage-webfont.eot');
+    src:url('../fonts/hoverage_vintage-webfont.eot') format('embedded-opentype'),
+        url('../fonts/hoverage_vintage-webfont.woff') format('woff'),
+        url('../fonts/hoverage_vintage-webfont.ttf') format('truetype'),
+        url('../fonts/hoverage_vintage-webfont.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+
+[class^="icon-"], [class*=" icon-"] {
+	font-family: 'icomoon';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-iconeRound:before {
+	content: "\ea92";
+}
+
+.icon-locked:before {
+	content: "\e604";
+}
+
+.icon-cuve_recup:before {
+	content: "\e605";
+}
+
+.icon-affiche:before {
+	content: "\e606";
+}
+
+.icon-toilettes:before {
+	content: "\e607";
+}
+
+.icon-arrosage:before {
+	content: "\e608";
+}
+
+.icon-bouche_egout:before {
+	content: "\e609";
+}
+
+.icon-shop:before {
+	content: "\e60a";
+}
+
+.icon-fontaine:before {
+	content: "\e60b";
+}
+
+.icon-dechet_lac:before {
+	content: "\e60c";
+}
+
+.icon-filtrage:before {
+	content: "\e60d";
+}
+
+.icon-denoncer:before {
+	content: "\e60e";
+}
+
+.icon-ctrl_canalisation:before {
+	content: "\e60f";
+}
+
+.icon-ctrl_instal_hydro:before {
+	content: "\e610";
+}
+
+.icon-ctrl_canaux:before {
+	content: "\e611";
+}
+
+.icon-ctrl_step:before {
+	content: "\e612";
+}
+
+.icon-loi:before {
+	content: "\e613";
+}
+
+.icon-block_prod:before {
+	content: "\e614";
+}
+
+.icon-test_conso:before {
+	content: "\e615";
+}
+
+.icon-campagne:before {
+	content: "\e616";
+}
+
+.icon-label:before {
+	content: "\e617";
+}
+
+.icon-hydrante:before {
+	content: "\e618";
+}
+
+.icon-sidenav-action:before {
+	content: "\e600";
+}
+
+.icon-sidenav-docs:before {
+	content: "\e601";
+}
+
+.icon-sidenav-mafia:before {
+	content: "\e602";
+}
+
+.icon-sidenav-tactic:before {
+	content: "\e603";
+}
+
+.icon-cross:before {
+	content: "\ea0f";
+}
+
+
+
+ion-view{
+	font-family: $fairview;
+	background: url('../img/halftoneDark.png') top left repeat;
+}
+
+ion-header-bar{
+	background: $hydro-black-nav !important;
+	.title{
+		background: url("../img/HydroLogoHeader.png") center center no-repeat;
+		background-size: 40%;
+		display: block;
+		font-family: $hoverage;   
+		color: $hydro-white-text !important;
+		text-transform: lowercase;
+	}
+}
+
+.registerForm{
+	font-family: $fairview;
+	padding: 40px 20px 20px;
+	background: $hydro-white-text;
+	position: relative;
+	margin-top: 40px;
+	img{
+		position: absolute;
+		top:-10%;
+		width: 20%;
+		height: auto;
+		left: 40%;
+	}
+	.button-login{
+		border: none;
+		border-bottom: solid 3px $hydro-blue-dark;
+		background-color: $hydro-blue-middle;
+		color: $hydro-white-text;
+		font-family: $fairview;
+		font-size: 2em;
+		
+	}
+}

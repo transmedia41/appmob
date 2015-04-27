@@ -1,11 +1,7 @@
-<ion-view view-title="Hydromerta" ng-controller="AuthController">
-  <div class="bar bar-header bar-energized">
-    <h1 class="title">Hydromerta</h1>
-  </div>
+<ion-view ng-controller="AuthController">
   <ion-content class="padding">
-
-    <form name="registerForm">
-
+    <form class="registerForm" name="registerForm">
+	<img src="../img/logo_header_@2x.png" alt="logo_hydro"/>
 
       <div class="list">
         <label class="item item-input">
@@ -27,7 +23,7 @@
         The "ng-click" directive indicates which scope function to call when the form is submitted.
         The "ng-disabled" directive is used to disable the button if the form is invalid (i.e. the first name or last name is missing).
       -->
-      <button class="button button-full button-positive" ng-click="register()" ng-disabled="loginForm.$invalid">Register</button>
+      <button class="button button-full button-login" ng-click="register()" ng-disabled="loginForm.$invalid">Register</button>
     </form>
   </ion-content>
 </ion-view>
