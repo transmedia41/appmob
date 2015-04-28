@@ -5,12 +5,20 @@ angular.module('hydromerta')
 
                     .state('map', {
                         url: '/map',
-                        templateUrl: 'templates/map.html'
+                        templateUrl: 'templates/map.html',
+                                                controller: 'MapController'
+                        
                     })
 
                     .state('register', {
                         url: '/register',
                         templateUrl: 'templates/register.html',
+                        controller: 'loginController'
+                    })
+                    
+                    .state('login', {
+                        url: '/login',
+                        templateUrl: 'templates/login.html',
                         controller: 'loginController'
                     })
                     

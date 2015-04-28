@@ -10,12 +10,12 @@ angular.module('hydromerta.auth', ['angular-storage', 'hydromerta.services'])
                 },
                 logout: function () {
                     var data = {}
-                        var t = StorageService.wsToken;
-                        if (t) {
-                            data = {
-                                token: t
-                            }
+                    var t = StorageService.wsToken;
+                    if (t) {
+                        data = {
+                            token: t
                         }
+                    }
                     return $http.post('http://localhost:3000/logout', data)
                 },
                 register: function (data) {
@@ -26,10 +26,14 @@ angular.module('hydromerta.auth', ['angular-storage', 'hydromerta.services'])
 
         })
 
-        .controller('loginController', function ($rootScope, $scope, HTTPAuhtService, SocketService, $state) {
+        .controller('loginController', function ($rootScope, $scope, HTTPAuhtService, SocketService, $state, StorageService) {
+            $scope.user = {};
+
+            $scope.goToRegister = function () {
+                $state.go('register');
+            }
 
             function logFunc(data) {
-                console.log('salut')
                 HTTPAuhtService.login(data).
                         success(function (data, status, headers, config) {
                             SocketService.connect(data.token).on('connect', function () {
@@ -45,8 +49,8 @@ angular.module('hydromerta.auth', ['angular-storage', 'hydromerta.services'])
 
             $scope.loginFunc = function () {
                 var data = {
-                    username: $scope.username,
-                    password: $scope.password
+                    username: $scope.user.username,
+                    password: $scope.user.password
                 }
                 logFunc(data)
             }
@@ -54,11 +58,28 @@ angular.module('hydromerta.auth', ['angular-storage', 'hydromerta.services'])
                 logFunc(data)
             })
 
+            $scope.logoutFunc = function () {
+                    var t = StorageService.wsToken;
+                    if (t) {
+                        HTTPAuhtService.logout().
+                                success(function (data, status, headers, config) {
+                                     $state.go('login');
+                                }).
+                                error(function (data, status, headers, config) {
+                                    // ...
+                                })
+                    }
+                
+            }
+
         })
 
 
-        .controller('registerController', function ($rootScope, $scope, HTTPAuhtService) {
+        .controller('registerController', function ($rootScope, $scope, HTTPAuhtService, $state) {
             $scope.user = {};
+            $scope.goToLogin = function () {
+                $state.go('login');
+            }
             $scope.registerFunc = function () {
                 if ($scope.user.password === $scope.user.confirm) {
                     var dataReg = {

@@ -1,0 +1,30 @@
+<ion-view>
+    <ion-nav-bar class="bar-stable">
+        <ion-nav-buttons side="secondary">
+            <button class="button button-clear icon ion-person-add" ng-click="goToRegister()"></button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-content class="padding">
+        <form class="registerForm" name="loginForm">
+            <img src="../img/logo_header_@2x.png" alt="logo_hydro"/>
+
+            <div class="list">
+                <label class="item item-input">
+                    <input type="text" class="form-control" ng-model="user.username" id="exampleInputEmail1" placeholder="Enter username">
+                </label>
+                <label class="item item-input">
+                    <input type="password" class="form-control" ng-model="user.password" id="exampleInputPassword1" placeholder="Password">
+                    </div>
+
+                    <!-- Display an error message here, above the submit button, if an error occurred. -->
+                    <p ng-if="error" class="error">{{ error}}</p>
+
+                    <!--
+                      The submit button.
+                      The "ng-click" directive indicates which scope function to call when the form is submitted.
+                      The "ng-disabled" directive is used to disable the button if the form is invalid (i.e. the first name or last name is missing).
+                    -->
+                    <button type="submit" class="button button-full button-login" ng-click="loginFunc()">login</button>
+                    </form>
+                    </ion-content>
+                    </ion-view>

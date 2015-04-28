@@ -30,11 +30,11 @@ angular.module('hydromerta', ['ionic', 'hydromerta.constants', 'hydromerta.contr
             $rootScope.$on('$stateChangeStart', function (event, toState) {
 
                 // If the user is not logged in and is trying to access another state than "login"...
-                if (!StorageService.wsToken && toState.name !== 'register') {
+                if (!StorageService.wsToken && toState.name !== 'login' && toState.name !== 'register') {
 
                     // ... then cancel the transition and go to the "login" state instead.
                     event.preventDefault();
-                    $state.go('register');
+                    $state.go('login');
                 }
             });
         })

@@ -1,4 +1,9 @@
-<ion-view ng-controller="MapController">
+<ion-view ng-controller="loginController">
+    <ion-nav-bar class="bar-stable">
+        <ion-nav-buttons side="secondary">
+            <button class="button button-clear icon ion-log-out" ng-click="logoutFunc()"></button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
     <ion-content scroll="false">
         <!-- <div class=" test ion-ios-plus-outline"></div> -->
         <leaflet defaults="mapDefaults" center="mapCenter" markers="mapMarkers" data-tap-disabled="true" height="100%" geojson="geojson" maxbounds="maxbounds"></leaflet>

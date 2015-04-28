@@ -7763,6 +7763,10 @@ ion-header-bar {
     font-family: 'hoverage';
     color: #eeece1 !important;
     text-transform: lowercase; }
+  
+    ion-header-bar .button {
+    color: #eeece1 !important; }
+  
 
 .registerForm {
   font-family: 'fairview_regular';
