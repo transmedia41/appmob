@@ -46,3 +46,7 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
                 }
             });
         })
+        .controller('actionController', function ($scope, mapboxMapId, mapboxAccessToken, $ionicLoading, $http) {
+
+           
+        })

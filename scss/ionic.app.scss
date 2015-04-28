@@ -258,7 +258,7 @@ ion-view{
 	background: url('../img/halftoneDark.png') top left repeat;
 }
 
-ion-header-bar{
+ion-header-bar.login{
 	background: $hydro-black-nav !important;
 	.title{
 		background: url("../img/HydroLogoHeader.png") center center no-repeat;
@@ -275,7 +275,7 @@ ion-header-bar{
 	padding: 40px 20px 20px;
 	background: $hydro-white-text;
 	position: relative;
-	margin-top: 40px;
+	margin-top: 20vh;
 	img{
 		position: absolute;
 		top:-30px;

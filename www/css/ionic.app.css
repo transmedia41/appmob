@@ -7754,9 +7754,9 @@ ion-view {
   font-family: 'fairview_regular';
   background: url('../img/halftoneDark.png') top left repeat; }
 
-ion-header-bar {
+ion-header-bar.login {
   background: #333033 !important; }
-  ion-header-bar .title {
+  ion-header-bar.login .title {
     background: url("../img/HydroLogoHeader.png") center center no-repeat;
     background-size: 150px;
     display: block;
@@ -7769,7 +7769,7 @@ ion-header-bar {
   padding: 40px 20px 20px;
   background: #eeece1;
   position: relative;
-  margin-top: 40px; }
+  margin-top: 20vh; }
   .registerForm img {
     position: absolute;
     top: -30px;
