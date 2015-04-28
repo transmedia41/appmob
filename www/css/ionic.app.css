@@ -7657,6 +7657,13 @@ a.button {
   font-weight: normal;
   font-style: normal; }
 
+@font-face {
+  font-family: 'glyphicons';
+  src: url('../fonts/glyphicons-halflings-regular.eot');
+  src: url('../fonts/glyphicons-halflings-regular.eot') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg') format('svg');
+  font-weight: normal;
+  font-style: normal; }
+
 [class^="icon-"], [class*=" icon-"] {
   font-family: 'icomoon';
   speak: none;
@@ -7847,7 +7854,7 @@ ion-view {
     width: 100%;
     padding: 0;
     box-shadow: none;
-    color: #14333d;
+    color: #3e758e;
     text-transform: lowercase;
     font-family: 'hoverage';
     font-size: 1.5em;
@@ -7856,13 +7863,39 @@ ion-view {
     .registerForm .switch_form .toggle {
       position: absolute;
       right: 3px; }
+    .registerForm .switch_form.state-false .handle:before, .registerForm .switch_form.state- .handle:before {
+      font-family: 'icomoon';
+      content: "\e604";
+      color: #3e758e;
+      top: -14px;
+      left: -28px; }
+    .registerForm .switch_form.state-true .handle:before {
+      font-family: 'glyphicons';
+      content: "\e008";
+      color: #3e758e;
+      font-size: smaller;
+      top: -14px;
+      left: -26px; }
   .registerForm .button-login {
     border: none;
     border-bottom: solid 3px #06323c;
     background-color: #3e758e;
     color: #eeece1;
     font-family: 'fairview_regular';
-    font-size: 2em; }
+    font-size: 2em;
+    -webkit-transition: all 50ms ease-in-out;
+    -moz-transition: all 50ms ease-in-out;
+    -ms-transition: all 50ms ease-in-out;
+    -o-transition: all 50ms ease-in-out;
+    transition: all 50ms ease-in-out; }
+    .registerForm .button-login.activated {
+      border-bottom-width: 1px;
+      padding-top: 2px;
+      -webkit-transition: all 50ms ease-in-out;
+      -moz-transition: all 50ms ease-in-out;
+      -ms-transition: all 50ms ease-in-out;
+      -o-transition: all 50ms ease-in-out;
+      transition: all 50ms ease-in-out; }
 
 #action {
   color: #14333d;
