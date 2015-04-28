@@ -56,7 +56,6 @@ angular.module('hydromerta.auth', ['angular-storage', 'hydromerta.services'])
             })
 
             $scope.logoutFunc = function () {
-                console.log('salut')
                     var t = StorageService.wsToken;
                     if (t) {
                         HTTPAuhtService.logout().

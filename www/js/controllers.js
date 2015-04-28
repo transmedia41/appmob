@@ -1,9 +1,23 @@
 angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-directive', 'hydromerta.services'])
 
-        .controller('MapController', function ($scope, mapboxMapId, mapboxAccessToken, $http) {
+        .controller('MapController', function ($scope, mapboxMapId, mapboxAccessToken, $http, SectorService, StorageService) {
+            
+                SectorService.getSectors(function (data) {
+                    $scope.geojson = {
+                        data: data,
+                        style: {
+                            fillColor: "green",
+                            weight: 2,
+                            opacity: 1,
+                            color: 'white',
+                            dashArray: '3',
+                            fillOpacity: 0.7
+                        }
+                    }
+                })
+
 
             /*$ionicLoading.show({template:"<img src='img/resistance.png' height='100px'/><p class='hydro'>Coming soon...</p>"}); */
-//            SectorService.getSectors();
 
             var mapboxTileLayer = "http://api.tiles.mapbox.com/v4/" + mapboxMapId;
             mapboxTileLayer = mapboxTileLayer + "/{z}/{x}/{y}.png?access_token=" + mapboxAccessToken;
@@ -32,22 +46,10 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
 
 
 
-            $http.get("geojson/sectors.json").success(function (data, status) {
-                $scope.geojson = {
-                    data: data,
-                    style: {
-                        fillColor: "green",
-                        weight: 2,
-                        opacity: 1,
-                        color: 'white',
-                        dashArray: '3',
-                        fillOpacity: 0.7
-                    }
 
-                }
-            });
         })
+
         .controller('actionController', function ($scope, mapboxMapId, mapboxAccessToken, $ionicLoading, $http) {
 
-           
+
         })

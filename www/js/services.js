@@ -5,6 +5,8 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
             var service = {
                 wsToken: store.get('wsToken'),
                 sectors: store.get('sectors'),
+                lastDisconnect: store.get('lastDisconnect'),
+                lastUpdateSector: store.get('lastDisconnect'),
                 setToken: function (t) {
                     service.wsToken = t;
                     store.set('wsToken', t);
@@ -16,9 +18,16 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
                 setSectors: function (data) {
                     service.sectors = data;
                     store.set('sectors', data);
+                },
+                setLastDisconnect: function (dateNow) {
+                    service.lastDisconnect = dateNow;
+                    store.set('lastDisconnect', dateNow);
+                },
+                setLastUpdateSector: function (dateUpdate) {
+                    service.lastDisconnect = dateUpdate;
+                    store.set('lastUpdateSector', dateUpdate);
                 }
             };
-
             return service;
         })
 
@@ -63,49 +72,68 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
 
         })
 
-        .service('SectorService', function (StorageService, SocketService) {
+        .service('SectorService', function ($rootScope, StorageService, SocketService) {
 
             var sectors = []
+
+            $rootScope.$on('connection', function (e) {
+                SocketService.getSocket().on('action polygon performed', function (data) {
+                    //console.log(data)
+                    remplaceSector(data)
+                    $rootScope.$emit('new sector available')
+                })
+            })
 
             function getListSectors(callback) {
                 SocketService.getSocket()
                         .emit('get sectors')
                         .on('sectors responce', function (data) {
-                            localStorageService.set('sectors', data)
-                            localStorageService.set('last update sectors', Date.now())
+                            StorageService.setSectors(data)
+                            StorageService.setLastUpdateSector(Date.now())
                             //console.log('get sectors')
                             sectors = data
                             callback(sectors)
                         })
             }
 
+            function remplaceSector(newSector) {
+                angular.forEach(sectors, function (oldSector, key) {
+                    if (oldSector.id == newSector.id) {
+                        sectors[key] = newSector
+                    }
+                })
+                StorageService.setSectors(sectors)
+                StorageService.setLastUpdateSector(Date.now())
+            }
+
             var service = {
                 getSectors: function (callback) {
-                    if (localStorageService.isSupported) {
-                        if (!localStorageService.get('sectors')) {
+                    if (!StorageService.sectors) {
+                        getListSectors(callback)
+                        var lastDisconnect
+                        (!StorageService.lastDisconnect) ? lastDisconnect = 0 : lastDisconnect = StorageService.lastDisconnect
+                        if (lastDisconnect > StorageService.lastUpdateSector) {
                             getListSectors(callback)
                         } else {
-                            var lastDisconnect
-                            (!localStorageService.get('last disconnect')) ? lastDisconnect = 0 : lastDisconnect = localStorageService.get('last disconnect')
-                            if (lastDisconnect > localStorageService.get('last update sectors')) {
-                                getListSectors(callback)
-                            } else {
-                                sectors = localStorageService.get('sectors')
-                                callback(sectors)
-                            }
+                            sectors = StorageService.sectors
+                            callback(sectors)
                         }
-                    } else {
-                        $rootScope.$emit('localstorage not supported')
                     }
                 },
-                onUpdate: function (callback) {
-                    // use socket to track update and execute callback...
-                    // update sectors and save into localstorage
-                    socket.on('sectors update', function (data) {
-                        callback(data)
+                getSectorsLocal: function (callback) {
+                    callback(sectors)
+                },
+                getActionPoint: function () {
+                    var actionPoint = []
+                    angular.forEach(sectors, function (sector, key) {
+                        angular.forEach(sector.properties.actionsPoint, function (point) {
+                            actionPoint.push(point)
+                        })
                     })
+                    return actionPoint
                 }
             }
             return service
 
         })
+
