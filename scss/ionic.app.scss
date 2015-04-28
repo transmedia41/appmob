@@ -262,7 +262,7 @@ ion-header-bar{
 	background: $hydro-black-nav !important;
 	.title{
 		background: url("../img/HydroLogoHeader.png") center center no-repeat;
-		background-size: 40%;
+		background-size: 150px;
 		display: block;
 		font-family: $hoverage;   
 		color: $hydro-white-text !important;
@@ -278,8 +278,8 @@ ion-header-bar{
 	margin-top: 40px;
 	img{
 		position: absolute;
-		top:-10%;
-		width: 20%;
+		top:-30px;
+		width: 60px;
 		height: auto;
 		left: 40%;
 	}

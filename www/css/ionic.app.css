@@ -7758,7 +7758,7 @@ ion-header-bar {
   background: #333033 !important; }
   ion-header-bar .title {
     background: url("../img/HydroLogoHeader.png") center center no-repeat;
-    background-size: 40%;
+    background-size: 150px;
     display: block;
     font-family: 'hoverage';
     color: #eeece1 !important;
@@ -7772,8 +7772,8 @@ ion-header-bar {
   margin-top: 40px; }
   .registerForm img {
     position: absolute;
-    top: -10%;
-    width: 20%;
+    top: -30px;
+    width: 60px;
     height: auto;
     left: 40%; }
   .registerForm .button-login {
