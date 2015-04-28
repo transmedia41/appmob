@@ -6,7 +6,9 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
                 wsToken: store.get('wsToken'),
                 sectors: store.get('sectors'),
                 lastDisconnect: store.get('lastDisconnect'),
-                lastUpdateSector: store.get('lastDisconnect'),
+                lastUpdateSector: store.get('lastUpdateSector'),
+                lastUpdateActionPoints: store.get('lastUpdateActionPoints'),
+                ActionPoints: store.get('ActionPoints'),
                 setToken: function (t) {
                     service.wsToken = t;
                     store.set('wsToken', t);
@@ -26,6 +28,14 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
                 setLastUpdateSector: function (dateUpdate) {
                     service.lastDisconnect = dateUpdate;
                     store.set('lastUpdateSector', dateUpdate);
+                },
+                setLastUpdateActionPoints: function (dateUpdate) {
+                    service.lastUpdateActionPoints = dateUpdate;
+                    store.set('lastUpdateActionPoints', dateUpdate);
+                },
+                setActionPoints: function (data) {
+                    service.actionPoints = data;
+                    store.set('actionPoints', data);
                 }
             };
             return service;
@@ -75,15 +85,6 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
         .service('SectorService', function ($rootScope, StorageService, SocketService) {
 
             var sectors = []
-
-            $rootScope.$on('connection', function (e) {
-                SocketService.getSocket().on('action polygon performed', function (data) {
-                    //console.log(data)
-                    remplaceSector(data)
-                    $rootScope.$emit('new sector available')
-                })
-            })
-
             function getListSectors(callback) {
                 SocketService.getSocket()
                         .emit('get sectors')
@@ -96,44 +97,72 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
                         })
             }
 
-            function remplaceSector(newSector) {
-                angular.forEach(sectors, function (oldSector, key) {
-                    if (oldSector.id == newSector.id) {
-                        sectors[key] = newSector
-                    }
-                })
-                StorageService.setSectors(sectors)
-                StorageService.setLastUpdateSector(Date.now())
-            }
-
             var service = {
                 getSectors: function (callback) {
-                    if (!StorageService.sectors) {
-                        getListSectors(callback)
-                        var lastDisconnect
-                        (!StorageService.lastDisconnect) ? lastDisconnect = 0 : lastDisconnect = StorageService.lastDisconnect
-                        if (lastDisconnect > StorageService.lastUpdateSector) {
-                            getListSectors(callback)
-                        } else {
-                            sectors = StorageService.sectors
-                            callback(sectors)
-                        }
-                    }
+                    getListSectors(callback)
                 },
                 getSectorsLocal: function (callback) {
                     callback(sectors)
-                },
-                getActionPoint: function () {
-                    var actionPoint = []
-                    angular.forEach(sectors, function (sector, key) {
-                        angular.forEach(sector.properties.actionsPoint, function (point) {
-                            actionPoint.push(point)
-                        })
-                    })
-                    return actionPoint
                 }
             }
             return service
 
         })
+        
+        .service('ActionPointService', function ($rootScope, StorageService, SocketService) {
+
+            var sectors = []
+
+            $rootScope.$on('connection', function (e) {
+                SocketService.getSocket().on('action point performed', function (data) {
+                    //console.log(data)
+                    remplaceActionPoints(data)
+                    $rootScope.$emit('new point available')
+                })
+            })
+
+            function getListActionPoints(callback) {
+                SocketService.getSocket()
+                        .emit('get action point')
+                        .on('action point responce', function (data) {
+                            StorageService.setActionPoints(data)
+                            StorageService.setLastUpdateActionPoints(Date.now())
+                            //console.log('get sectors')
+                            sectors = data
+                            callback(sectors)
+                        })
+            }
+
+            function remplaceActionPoints(newActionPoint) {
+                angular.forEach(sectors, function (oldSector, key) {
+                    if (oldSector.id == newSector.id) {
+                        sectors[key] = newSector
+                    }
+                })
+//                localStorageService.set('sectors', sectors)
+//                localStorageService.set('last update sectors', Date.now())
+            }
+
+            var service = {
+                getActionPoints: function (callback) {
+                    if (!StorageService.actionPoint) {
+                        getListActionPoints(callback)
+                        var lastDisconnect
+                        (!StorageService.lastDisconnect) ? lastDisconnect = 0 : lastDisconnect = StorageService.lastDisconnect
+                        if (lastDisconnect > StorageService.lastUpdateActionPoints) {
+                            getListActionPoints(callback)
+                        } else {
+                            actionPoints = StorageService.actionPoints
+                            callback(actionPoints)
+                        }
+                    }
+                },
+                getActionPointsLocal: function (callback) {
+                    callback(actionPoints)
+                },
+            }
+            return service
+
+        })
+
 

@@ -1,7 +1,9 @@
 angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-directive', 'hydromerta.services'])
 
-        .controller('MapController', function ($scope, mapboxMapId, mapboxAccessToken, $http, SectorService, StorageService) {
-            
+        .controller('MapController', function ($scope, mapboxMapId, mapboxAccessToken, SectorService, StorageService, ActionPointService) {
+
+
+            if (!StorageService.sectors) {
                 SectorService.getSectors(function (data) {
                     $scope.geojson = {
                         data: data,
@@ -15,6 +17,30 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
                         }
                     }
                 })
+            } else {
+                $scope.geojson = {
+                    data: StorageService.sectors,
+                    style: {
+                        fillColor: "green",
+                        weight: 2,
+                        opacity: 1,
+                        color: 'white',
+                        dashArray: '3',
+                        fillOpacity: 0.7
+                    }
+                }
+
+            }
+
+            ActionPointService.getActionPoints(function (data) {
+                console.log(data);
+
+
+
+            })
+
+
+
 
 
             /*$ionicLoading.show({template:"<img src='img/resistance.png' height='100px'/><p class='hydro'>Coming soon...</p>"}); */
