@@ -7864,7 +7864,14 @@ ion-view {
 
 #action {
   color: #14333d;
-  float: left; }
+  float: left;
+  position: relative; }
+  #action .icon-cross {
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: larger;
+    color: #3e758e; }
   #action #title {
     width: 100%;
     float: left;

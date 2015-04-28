@@ -392,6 +392,14 @@ ion-view{
 #action{
 	color: $hydro-blue;
 	float: left;
+	position: relative;
+	.icon-cross{
+		position: absolute;
+		right: 0;
+		top:0;
+		font-size: larger;
+		color: $hydro-blue-middle;
+	}
 	#title{
 		width: 100%;
 		float: left;
