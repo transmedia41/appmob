@@ -7904,7 +7904,20 @@ ion-view {
     color: #eeece1;
     font-family: 'hoverage';
     text-transform: lowercase;
-    font-size: 2em; }
+    font-size: 2em;
+    -webkit-transition: all 50ms ease-in-out;
+    -moz-transition: all 50ms ease-in-out;
+    -ms-transition: all 50ms ease-in-out;
+    -o-transition: all 50ms ease-in-out;
+    transition: all 50ms ease-in-out; }
+    #action .button-action.activated {
+      border-bottom-width: 1px;
+      padding-top: 2px;
+      -webkit-transition: all 50ms ease-in-out;
+      -moz-transition: all 50ms ease-in-out;
+      -ms-transition: all 50ms ease-in-out;
+      -o-transition: all 50ms ease-in-out;
+      transition: all 50ms ease-in-out; }
 
 ion-content.padding {
   padding-top: 5vh; }
