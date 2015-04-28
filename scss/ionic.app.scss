@@ -70,6 +70,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 $fairview:				'fairview_regular';
 $hoverage:				'hoverage';
 $icomoon:				'icomoon';
+$glyph:					'glyphicons';
 
 @font-face {
     font-family: 'icomoon';
@@ -122,6 +123,17 @@ $icomoon:				'icomoon';
         url('../fonts/hoverage_vintage-webfont.woff') format('woff'),
         url('../fonts/hoverage_vintage-webfont.ttf') format('truetype'),
         url('../fonts/hoverage_vintage-webfont.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'glyphicons';
+    src:url('../fonts/glyphicons-halflings-regular.eot');
+    src:url('../fonts/glyphicons-halflings-regular.eot') format('embedded-opentype'),
+        url('../fonts/glyphicons-halflings-regular.woff') format('woff'),
+        url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'),
+        url('../fonts/glyphicons-halflings-regular.svg') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -306,13 +318,15 @@ ion-view{
 					background: $hydro-white-text;
 					height: 100%;
 					width: 30%;
+					position: relative;
 					p{
 						color: $hydro-blue-dark;
-						height: 100%;
+						position: absolute;
 						font-size: 10px;
 						margin: 0;
+						top:-2px;
 						vertical-align: middle;
-						margin-left: 5%;
+						left: 5%;
 						span{
 							font-size:5px;
 						}
@@ -367,7 +381,7 @@ ion-view{
 		width: 100%;
 		padding: 0;
 		box-shadow: none;
-		color: $hydro-blue;
+		color: $hydro-blue-middle;
 		text-transform: lowercase;
 		font-family: $hoverage;
 		font-size: 1.5em;
@@ -377,6 +391,25 @@ ion-view{
 			position: absolute;
 			right: 3px;
 		}
+		&.state-false, &.state-{
+				.handle:before{
+					font-family: $icomoon;
+					content: "\e604";
+					color: $hydro-blue-middle;
+					top:-14px;
+					left: -28px;
+				}
+			}
+			&.state-true{
+				.handle:before{
+					font-family: $glyph;
+					content: "\e008";
+					color: $hydro-blue-middle;
+					font-size: smaller;
+					top:-14px;
+					left: -26px;
+				}
+			}
 	}
 	.button-login{
 		border: none;
@@ -385,7 +418,21 @@ ion-view{
 		color: $hydro-white-text;
 		font-family: $fairview;
 		font-size: 2em;
-		
+		-webkit-transition: all 50ms ease-in-out;
+		-moz-transition: all 50ms ease-in-out;
+		-ms-transition: all 50ms ease-in-out;
+		-o-transition: all 50ms ease-in-out;
+		transition: all 50ms ease-in-out;
+
+		&.activated{
+			border-bottom-width: 1px;
+			padding-top: 2px;
+			-webkit-transition: all 50ms ease-in-out;
+			-moz-transition: all 50ms ease-in-out;
+			-ms-transition: all 50ms ease-in-out;
+			-o-transition: all 50ms ease-in-out;
+			transition: all 50ms ease-in-out;
+		}
 	}
 }
 
