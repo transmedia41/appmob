@@ -258,7 +258,7 @@ ion-view{
 	background: url('../img/halftoneDark.png') top left repeat;
 }
 
-ion-header-bar{
+.login_header{
 	background: $hydro-black-nav !important;
 	.title{
 		background: url("../img/HydroLogoHeader.png") center center no-repeat;
@@ -270,12 +270,89 @@ ion-header-bar{
 	}
 }
 
+.inside_header{
+	#header_wrap{
+		background: $hydro-blue !important;
+		height: 44px;
+		position:relative;
+		z-index: 100;
+		.logo_hydro{
+			height: 40px;
+			width: 40px;
+			left: 5px;
+			bottom:-15px;
+			position: absolute;
+			
+		}
+		.xp_wrapper{
+			float: left;
+			margin-left: 17%;
+			height: 34px;
+			margin-top:10px;
+			width: 66%;
+			.xp{
+				float: left;
+				font-size: 15px;
+				margin:0;
+				width: 10%;
+			}
+			.loader_wrap{
+				float: right;
+				margin: 0;
+				height: 15px;
+				width:90%;
+				border: solid 1px $hydro-white-text;
+				.fill{
+					background: $hydro-white-text;
+					height: 100%;
+					width: 30%;
+					p{
+						color: $hydro-blue-dark;
+						height: 100%;
+						font-size: 10px;
+						margin: 0;
+						vertical-align: middle;
+						margin-left: 5%;
+						span{
+							font-size:5px;
+						}
+					}
+				}
+			}
+			.grade{
+				margin:0;
+				width: 90%;
+				float: right;
+				height: 12px;
+				font-size: 8px;
+				margin-bottom: 0;
+			}
+			p{
+				font-family: $hoverage;
+				color: $hydro-white-text;
+				text-transform: lowercase;
+				float: left;
+				display: inline;
+			}
+		}
+		.logout{
+			float: right;
+			margin-right: 5px;
+			margin-top: 12px;
+			width: 20px;
+		}
+	}
+	.nav-bar-block{
+		display: none;
+	}
+}
+
 .registerForm{
 	font-family: $fairview;
 	padding: 40px 20px 20px;
 	background: $hydro-white-text;
 	position: relative;
-	margin-top: 40px;
+	margin-top: 20vh;
 	img{
 		position: absolute;
 		top:-30px;

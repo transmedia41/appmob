@@ -7754,9 +7754,9 @@ ion-view {
   font-family: 'fairview_regular';
   background: url('../img/halftoneDark.png') top left repeat; }
 
-ion-header-bar {
+.login_header {
   background: #333033 !important; }
-  ion-header-bar .title {
+  .login_header .title {
     background: url("../img/HydroLogoHeader.png") center center no-repeat;
     background-size: 150px;
     display: block;
@@ -7768,12 +7768,74 @@ ion-header-bar {
     color: #eeece1 !important; }
   
 
+.inside_header #header_wrap {
+  background: #14333d !important;
+  height: 44px;
+  position: relative;
+  z-index: 100; }
+  .inside_header #header_wrap .logo_hydro {
+    height: 40px;
+    width: 40px;
+    left: 5px;
+    bottom: -15px;
+    position: absolute; }
+  .inside_header #header_wrap .xp_wrapper {
+    float: left;
+    margin-left: 17%;
+    height: 34px;
+    margin-top: 10px;
+    width: 66%; }
+    .inside_header #header_wrap .xp_wrapper .xp {
+      float: left;
+      font-size: 15px;
+      margin: 0;
+      width: 10%; }
+    .inside_header #header_wrap .xp_wrapper .loader_wrap {
+      float: right;
+      margin: 0;
+      height: 15px;
+      width: 90%;
+      border: solid 1px #eeece1; }
+      .inside_header #header_wrap .xp_wrapper .loader_wrap .fill {
+        background: #eeece1;
+        height: 100%;
+        width: 30%; }
+        .inside_header #header_wrap .xp_wrapper .loader_wrap .fill p {
+          color: #06323c;
+          height: 100%;
+          font-size: 10px;
+          margin: 0;
+          vertical-align: middle;
+          margin-left: 5%; }
+          .inside_header #header_wrap .xp_wrapper .loader_wrap .fill p span {
+            font-size: 5px; }
+    .inside_header #header_wrap .xp_wrapper .grade {
+      margin: 0;
+      width: 90%;
+      float: right;
+      height: 12px;
+      font-size: 8px;
+      margin-bottom: 0; }
+    .inside_header #header_wrap .xp_wrapper p {
+      font-family: 'hoverage';
+      color: #eeece1;
+      text-transform: lowercase;
+      float: left;
+      display: inline; }
+  .inside_header #header_wrap .logout {
+    float: right;
+    margin-right: 5px;
+    margin-top: 12px;
+    width: 20px; }
+.inside_header .nav-bar-block {
+  display: none; }
+
 .registerForm {
   font-family: 'fairview_regular';
   padding: 40px 20px 20px;
   background: #eeece1;
   position: relative;
-  margin-top: 40px; }
+  margin-top: 20vh; }
   .registerForm img {
     position: absolute;
     top: -30px;

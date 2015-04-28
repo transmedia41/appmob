@@ -1,9 +1,9 @@
 angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-directive', 'hydromerta.services'])
 
-        .controller('MapController', function ($scope, mapboxMapId, mapboxAccessToken, $http, SectorService) {
+        .controller('MapController', function ($scope, mapboxMapId, mapboxAccessToken, $http) {
 
             /*$ionicLoading.show({template:"<img src='img/resistance.png' height='100px'/><p class='hydro'>Coming soon...</p>"}); */
-            SectorService.getSectors();
+//            SectorService.getSectors();
 
             var mapboxTileLayer = "http://api.tiles.mapbox.com/v4/" + mapboxMapId;
             mapboxTileLayer = mapboxTileLayer + "/{z}/{x}/{y}.png?access_token=" + mapboxAccessToken;
@@ -46,4 +46,8 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
 
                 }
             });
+        })
+        .controller('actionController', function ($scope, mapboxMapId, mapboxAccessToken, $ionicLoading, $http) {
+
+           
         })
