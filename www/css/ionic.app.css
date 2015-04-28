@@ -7863,19 +7863,21 @@ ion-view {
     .registerForm .switch_form .toggle {
       position: absolute;
       right: 3px; }
-    .registerForm .switch_form.state-false .handle:before, .registerForm .switch_form.state- .handle:before {
+    .registerForm .switch_form.state-false .track:before, .registerForm .switch_form.state- .track:before {
+      position: absolute;
       font-family: 'icomoon';
       content: "\e604";
       color: #3e758e;
-      top: -14px;
-      left: -28px; }
-    .registerForm .switch_form.state-true .handle:before {
+      top: 11px;
+      right: 11px; }
+    .registerForm .switch_form.state-true .track:before {
+      position: absolute;
       font-family: 'glyphicons';
       content: "\e008";
       color: #3e758e;
-      font-size: smaller;
-      top: -14px;
-      left: -26px; }
+      font-size: x-small;
+      top: 13px;
+      left: 13px; }
   .registerForm .button-login {
     border: none;
     border-bottom: solid 3px #06323c;

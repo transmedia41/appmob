@@ -392,22 +392,24 @@ ion-view{
 			right: 3px;
 		}
 		&.state-false, &.state-{
-				.handle:before{
+				.track:before{
+					position: absolute;
 					font-family: $icomoon;
 					content: "\e604";
 					color: $hydro-blue-middle;
-					top:-14px;
-					left: -28px;
+					top:11px;
+					right: 11px;
 				}
 			}
 			&.state-true{
-				.handle:before{
+				.track:before{
+					position: absolute;
 					font-family: $glyph;
 					content: "\e008";
 					color: $hydro-blue-middle;
-					font-size: smaller;
-					top:-14px;
-					left: -26px;
+					font-size: x-small;
+					top:13px;
+					left: 13px;
 				}
 			}
 	}
