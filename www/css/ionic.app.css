@@ -7795,14 +7795,16 @@ ion-view {
       .inside_header #header_wrap .xp_wrapper .loader_wrap .fill {
         background: #eeece1;
         height: 100%;
-        width: 30%; }
+        width: 30%;
+        position: relative; }
         .inside_header #header_wrap .xp_wrapper .loader_wrap .fill p {
           color: #06323c;
-          height: 100%;
+          position: absolute;
           font-size: 10px;
           margin: 0;
+          top: -2px;
           vertical-align: middle;
-          margin-left: 5%; }
+          left: 5%; }
           .inside_header #header_wrap .xp_wrapper .loader_wrap .fill p span {
             font-size: 5px; }
     .inside_header #header_wrap .xp_wrapper .grade {

@@ -306,13 +306,15 @@ ion-view{
 					background: $hydro-white-text;
 					height: 100%;
 					width: 30%;
+					position: relative;
 					p{
 						color: $hydro-blue-dark;
-						height: 100%;
+						position: absolute;
 						font-size: 10px;
 						margin: 0;
+						top:-2px;
 						vertical-align: middle;
-						margin-left: 5%;
+						left: 5%;
 						span{
 							font-size:5px;
 						}
