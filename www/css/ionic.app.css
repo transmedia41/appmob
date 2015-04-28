@@ -7841,6 +7841,8 @@ ion-view {
   background: #eeece1;
   position: relative;
   margin-top: 5vh; }
+  .registerForm input {
+    font-family: 'fairview_regular'; }
   .registerForm img {
     position: absolute;
     top: -30px;

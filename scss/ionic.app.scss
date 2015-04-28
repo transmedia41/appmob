@@ -367,6 +367,9 @@ ion-view{
 	background: $hydro-white-text;
 	position: relative;
 	margin-top: 5vh;
+	input{
+		font-family: $fairview;
+	}
 	img{
 		position: absolute;
 		top:-30px;
