@@ -1,37 +1,78 @@
-angular.module('hydromerta.auth', ['hydromerta.constants'])
+angular.module('hydromerta.auth', ['angular-storage', 'hydromerta.services'])
 
-.controller('AuthController', function ($scope, mapboxMapId, mapboxAccessToken, $ionicLoading) {
-     $scope.register = function () {
 
-                delete $scope.error;
 
-                $http({
-                    method: 'POST',
-                    url: apiUrl + '/register',
-                    data: $scope.user
-                }).success(function (user) {
-                    var date = new Date;
-                    AuthService.setUser(user);
-                    AuthService.setLastLogin(date.toLocaleString());
+        .service('HTTPAuhtService', function ($http, StorageService) {
 
-                    // Set the next view as the root of the history.
-                    // Otherwise, the next screen will have a "back" arrow pointing back to the login screen.
-                    $ionicHistory.nextViewOptions({
-                        disableBack: true,
-                        historyRoot: true
-                    });
+            return {
+                login: function (data) {
+                    return $http.post('http://localhost:3000/login', data)
+                },
+                logout: function () {
+                    var data = {}
+                        var t = StorageService.wsToken;
+                        if (t) {
+                            data = {
+                                token: t
+                            }
+                        }
+                    return $http.post('http://localhost:3000/logout', data)
+                },
+                register: function (data) {
+                    return $http.post('http://localhost:3000/register', data)
+                }
 
-                    // Go to the issue creation tab.
-                    $state.go('app.issueMap');
+            }
 
-                }).error(function () {
+        })
 
-                    // If an error occurs, hide the loading message and show an error message.
-                    $ionicLoading.hide();
-                    $scope.error = 'Could not log in.';
-                });
-            };
-   
-})
+        .controller('loginController', function ($rootScope, $scope, HTTPAuhtService, SocketService, $state) {
 
- 
+            function logFunc(data) {
+                console.log('salut')
+                HTTPAuhtService.login(data).
+                        success(function (data, status, headers, config) {
+                            SocketService.connect(data.token).on('connect', function () {
+//                                localStorageService.set('currentPage', 'actions')
+                                $state.go("map");
+                            })
+                        }).
+                        error(function (data, status, headers, config) {
+                            // called asynchronously if an error occurs
+                            // or server returns response with an error status.
+                        })
+            }
+
+            $scope.loginFunc = function () {
+                var data = {
+                    username: $scope.username,
+                    password: $scope.password
+                }
+                logFunc(data)
+            }
+            $rootScope.$on('register', function (e, data) {
+                logFunc(data)
+            })
+
+        })
+
+
+        .controller('registerController', function ($rootScope, $scope, HTTPAuhtService) {
+            $scope.user = {};
+            $scope.registerFunc = function () {
+                if ($scope.user.password === $scope.user.confirm) {
+                    var dataReg = {
+                        username: $scope.user.username,
+                        password: $scope.user.password
+                    }
+                    HTTPAuhtService.register(dataReg).
+                            success(function (data, status, headers, config) {
+                                $rootScope.$emit('register', dataReg)
+                            }).error(function (data, status, headers, config) {
+                    })
+                } else {
+                    console.log('invalide confirm password')
+                }
+            }
+
+        })

@@ -21,3 +21,20 @@ angular.module('hydromerta', ['ionic', 'hydromerta.constants', 'hydromerta.contr
                 }
             });
         })
+
+        .run(function (StorageService, $rootScope, $state) {
+
+            // Listen for the $stateChangeStart event of AngularUI Router.
+            // This event indicates that we are transitioning to a new state.
+            // We have the possibility to cancel the transition in the callback function.
+            $rootScope.$on('$stateChangeStart', function (event, toState) {
+
+                // If the user is not logged in and is trying to access another state than "login"...
+                if (!StorageService.wsToken && toState.name !== 'register') {
+
+                    // ... then cancel the transition and go to the "login" state instead.
+                    event.preventDefault();
+                    $state.go('register');
+                }
+            });
+        })
