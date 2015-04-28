@@ -352,13 +352,31 @@ ion-view{
 	padding: 40px 20px 20px;
 	background: $hydro-white-text;
 	position: relative;
-	margin-top: 20vh;
+	margin-top: 5vh;
 	img{
 		position: absolute;
 		top:-30px;
 		width: 60px;
 		height: auto;
 		left: 40%;
+	}
+	.switch_form{
+		background: none;
+		border: none;
+		float: right;
+		width: 100%;
+		padding: 0;
+		box-shadow: none;
+		color: $hydro-blue;
+		text-transform: lowercase;
+		font-family: $hoverage;
+		font-size: 1.5em;
+		position: relative;
+		padding-top: 5px;
+		.toggle{
+			position: absolute;
+			right: 3px;
+		}
 	}
 	.button-login{
 		border: none;
@@ -369,4 +387,63 @@ ion-view{
 		font-size: 2em;
 		
 	}
+}
+
+#action{
+	color: $hydro-blue;
+	float: left;
+	#title{
+		width: 100%;
+		float: left;
+		display: inline-block;
+		color: $hydro-blue;
+		h1{
+			font-family: $hoverage;
+			text-transform: lowercase;
+			color: $hydro-black-nav;
+			span{
+				margin-right: 10px;
+			}
+		}
+	}
+	#action_attributes{
+		float: left;
+		display: inline-block;
+		.attribute{
+			float: left;
+			width: 50%;
+			.label{
+				float: left;
+				font-family: $hoverage;
+				text-transform: lowercase;
+			}
+			.value{
+				float: left;
+				font-family: $fairview;
+				font-size: larger;
+				padding-left: 15px;
+				color: $hydro-blue-middle;
+			}
+		}
+		.full{
+			width: 100%;
+		}
+	}
+	.button-action{
+		border: none;
+		display: block;
+		float: left;
+		margin-top: 5vh;
+		border-bottom: solid 3px $hydro-blue-dark;
+		background-color: $hydro-blue-middle;
+		color: $hydro-white-text;
+		font-family: $hoverage;
+		text-transform: lowercase;
+		font-size: 2em;
+		
+	}
+}
+
+ion-content.padding{
+	padding-top: 5vh;
 }

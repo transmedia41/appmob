@@ -7763,10 +7763,6 @@ ion-view {
     font-family: 'hoverage';
     color: #eeece1 !important;
     text-transform: lowercase; }
-  
-    ion-header-bar .button {
-    color: #eeece1 !important; }
-  
 
 .inside_header #header_wrap {
   background: #14333d !important;
@@ -7835,13 +7831,29 @@ ion-view {
   padding: 40px 20px 20px;
   background: #eeece1;
   position: relative;
-  margin-top: 20vh; }
+  margin-top: 5vh; }
   .registerForm img {
     position: absolute;
     top: -30px;
     width: 60px;
     height: auto;
     left: 40%; }
+  .registerForm .switch_form {
+    background: none;
+    border: none;
+    float: right;
+    width: 100%;
+    padding: 0;
+    box-shadow: none;
+    color: #14333d;
+    text-transform: lowercase;
+    font-family: 'hoverage';
+    font-size: 1.5em;
+    position: relative;
+    padding-top: 5px; }
+    .registerForm .switch_form .toggle {
+      position: absolute;
+      right: 3px; }
   .registerForm .button-login {
     border: none;
     border-bottom: solid 3px #06323c;
@@ -7849,3 +7861,50 @@ ion-view {
     color: #eeece1;
     font-family: 'fairview_regular';
     font-size: 2em; }
+
+#action {
+  color: #14333d;
+  float: left; }
+  #action #title {
+    width: 100%;
+    float: left;
+    display: inline-block;
+    color: #14333d; }
+    #action #title h1 {
+      font-family: 'hoverage';
+      text-transform: lowercase;
+      color: #333033; }
+      #action #title h1 span {
+        margin-right: 10px; }
+  #action #action_attributes {
+    float: left;
+    display: inline-block; }
+    #action #action_attributes .attribute {
+      float: left;
+      width: 50%; }
+      #action #action_attributes .attribute .label {
+        float: left;
+        font-family: 'hoverage';
+        text-transform: lowercase; }
+      #action #action_attributes .attribute .value {
+        float: left;
+        font-family: 'fairview_regular';
+        font-size: larger;
+        padding-left: 15px;
+        color: #3e758e; }
+    #action #action_attributes .full {
+      width: 100%; }
+  #action .button-action {
+    border: none;
+    display: block;
+    float: left;
+    margin-top: 5vh;
+    border-bottom: solid 3px #06323c;
+    background-color: #3e758e;
+    color: #eeece1;
+    font-family: 'hoverage';
+    text-transform: lowercase;
+    font-size: 2em; }
+
+ion-content.padding {
+  padding-top: 5vh; }

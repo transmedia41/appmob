@@ -5,7 +5,7 @@
 </ion-nav-bar>
     <ion-content class="padding">
         <div class="registerForm">
-           <button class="button" ng-click="login=!login" ></button>
+           <ion-toggle class="button switch_form " toggle-class="toggle-light" ng-click="login=!login"><span ng-if="!login">Register</span><span ng-if="login">Login</span></ion-toggle>
             <img src="../img/logo_header_@2x.png" alt="logo_hydro"/>
              <form name="loginForm" ng-if="login" ng-controller="loginController">
                 <div class="list">
