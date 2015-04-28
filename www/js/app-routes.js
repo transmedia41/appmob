@@ -10,12 +10,7 @@ angular.module('hydromerta')
                         
                     })
 
-                    .state('register', {
-                        url: '/register',
-                        templateUrl: 'templates/register.html',
-                        controller: 'loginController'
-                    })
-                    
+                
                     .state('login', {
                         url: '/login',
                         templateUrl: 'templates/login.html',

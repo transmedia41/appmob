@@ -29,9 +29,6 @@ angular.module('hydromerta.auth', ['angular-storage', 'hydromerta.services'])
         .controller('loginController', function ($rootScope, $scope, HTTPAuhtService, SocketService, $state, StorageService) {
             $scope.user = {};
 
-            $scope.goToRegister = function () {
-                $state.go('register');
-            }
 
             function logFunc(data) {
                 HTTPAuhtService.login(data).
@@ -96,5 +93,6 @@ angular.module('hydromerta.auth', ['angular-storage', 'hydromerta.services'])
                     console.log('invalide confirm password')
                 }
             }
+            $scope.login = true;
 
         })
