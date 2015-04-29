@@ -19,7 +19,7 @@
 
     <ion-content scroll="false" ng-controller="MapController">
         <!-- <div class=" test ion-ios-plus-outline"></div> -->
-        <leaflet defaults="mapDefaults" center="mapCenter" markers="mapMarkers" data-tap-disabled="true" height="100%" geojson="geojson" maxbounds="maxbounds"></leaflet>
+        <leaflet id="leafletMap" defaults="defaults" center="mapCenter" geojson="geojson" layers="layers" maxbounds="maxbounds" markers="markers" data-tap-disabled="true" height="100%"></leaflet>
     </ion-content>
 </ion-view>
 
