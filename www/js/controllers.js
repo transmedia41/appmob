@@ -2,6 +2,36 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
 
         .controller('MapController', function ($scope, mapboxMapId, mapboxAccessToken, SectorService, StorageService, ActionPointService, $rootScope) {
 
+            var egoutIcon = {
+                type: "extraMarker",
+                extraClasses: "icon-bouche_egout"
+            }
+            var toiletteIcon = {
+                type: "extraMarker",
+                extraClasses: "icon-toilettes"
+
+            }
+            var afficheIcon = {
+                type: "extraMarker",
+                extraClasses: "icon-affiche"
+
+            }
+            var arrosageIcon = {
+                type: "extraMarker",
+                extraClasses: "icon-arrosage"
+            }
+            var fontaineIcon = {
+                type: "extraMarker",
+                extraClasses: 'icon-fontaine'
+            }
+            var hydranteIcon = {
+                type: "extraMarker",
+                extraClasses: 'icon-hydrante'
+
+            }
+
+
+
 
             var mapboxTileLayer = "http://api.tiles.mapbox.com/v4/" + mapboxMapId + "/{z}/{x}/{y}.png?access_token=" + mapboxAccessToken
 
@@ -163,6 +193,16 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
                     //$scope.geojson= data
 
                 },
+                markerColor: function (cooldown) {
+                    // lastperformed+coooldown > date.now()
+                    if (cooldown <= 600) {
+                        return '../img/green.png';
+                    } else {
+                        return '../img/grey.png';
+                    }
+                    ;
+
+                },
                 addMarkersToMap: function (points) {
                     var markers = []
                     angular.forEach(points, function (point, index) {
@@ -171,9 +211,34 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
                             lng: point.geometry.coordinates[0],
                             properties: point.properties,
                         }
-                        console.log(point.properties.type.toLowerCase())
 
-
+                        if (point.properties.type == "hydrante") {
+                            marker.icon = hydranteIcon
+                        }
+                        ;
+                        if (point.properties.type.toLowerCase() == "fontaine") {
+                            marker.icon = fontaineIcon
+                        }
+                        ;
+                        if (point.properties.type == "arrosage") {
+                            marker.icon = arrosageIcon
+                        }
+                        ;
+                        if (point.properties.type == "affiche") {
+                            marker.icon = afficheIcon
+                        }
+                        ;
+                        if (point.properties.type == "toilettes") {
+                            marker.icon = toiletteIcon
+                        }
+                        ;
+                        if (point.properties.type == "bouche_egout") {
+                            marker.icon = egoutIcon
+                        }
+                        ;
+                        marker.icon.iconImg = $scope.markerColor(point.properties.coolDown)
+                        marker.icon.imgWidth = 32
+                        marker.icon.imgHeight = 42
                         markers.push(marker)
                     })
 
@@ -182,18 +247,31 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
 
             })
 
-            SectorService.getSectors(function (data) {
-                $scope.addSectorsGeoJSONToMap(data)
-            })
+
+
+
 
 
             ActionPointService.getActionPoints(function (data) {
+                console.log('ok')
                 $scope.markers = $scope.addMarkersToMap(data);
+
+                SectorService.getSectors(function (data) {
+                    $scope.addSectorsGeoJSONToMap(data)
+                })
+
+            })
+
+
+
+            $rootScope.$on('user responce', function () {
+                $scope.user = StorageService.user;
             })
 
             $rootScope.$on('new point available', function () {
-                SectorService.getSectorsLocal(function (data) {
-                    $scope.addSectorsGeoJSONToMap(data)
+                ActionPointService.getActionPoints(function (data) {
+                    $scope.markers = $scope.addMarkersToMap(data);
+                    console.log($scope.makers)
                 })
             })
 

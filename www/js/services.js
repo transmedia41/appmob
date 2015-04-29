@@ -9,6 +9,7 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
                 lastUpdateSector: store.get('lastUpdateSector'),
                 lastUpdateActionPoints: store.get('lastUpdateActionPoints'),
                 actionPoints: store.get('actionPoints'),
+                user: store.get('user'),
                 setToken: function (t) {
                     service.wsToken = t;
                     store.set('wsToken', t);
@@ -36,10 +37,15 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
                 setActionPoints: function (data) {
                     service.actionPoints = data;
                     store.set('actionPoints', data);
+                },
+                setUser: function (data) {
+                    service.user = data;
+                    store.set('user', data);
                 }
             };
             return service;
-        })
+        }
+        )
 
         .service('SocketService', function ($rootScope, StorageService) {
 
@@ -55,6 +61,7 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
                         $rootScope.$emit('connection')
                         socket.emit('get user')
                         socket.on('user responce', function (data) {
+                            StorageService.setUser(data);
                             $rootScope.$emit('user responce', data)
                         })
                         socket.on('user responce 404', function () {
@@ -132,8 +139,6 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
                 SocketService.getSocket()
                         .emit('get action point')
                         .on('action point responce', function (data) {
-                            StorageService.setActionPoints(data)
-                            StorageService.setLastUpdateActionPoints(Date.now())
                             //console.log('get sectors')
                             actionPoints = data
                             callback(actionPoints)
@@ -154,14 +159,6 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
                 getActionPoints: function (callback) {
                     if (!StorageService.actionPoints) {
                         getListActionPoints(callback)
-                        var lastDisconnect
-                        (!StorageService.lastDisconnect) ? lastDisconnect = 0 : lastDisconnect = StorageService.lastDisconnect
-                        if (lastDisconnect > StorageService.lastUpdateActionPoints) {
-                            getListActionPoints(callback)
-                        } else {
-                            actionPoints = StorageService.actionPoints
-                            callback(actionPoints)
-                        }
                     }
                 },
                 getActionPointsLocal: function (callback) {
