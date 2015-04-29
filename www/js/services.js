@@ -10,6 +10,7 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
                 lastUpdateActionPoints: store.get('lastUpdateActionPoints'),
                 actionPoints: store.get('actionPoints'),
                 user: store.get('user'),
+                actionId: store.get('actionId'),
                 setToken: function (t) {
                     service.wsToken = t;
                     store.set('wsToken', t);
@@ -41,7 +42,11 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
                 setUser: function (data) {
                     service.user = data;
                     store.set('user', data);
-                }
+                },
+                setActionId: function (id) {
+                    service.actionId = id;
+                    store.set('actionId', id);
+                },
             };
             return service;
         }
@@ -157,9 +162,7 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
 
             var service = {
                 getActionPoints: function (callback) {
-                    if (!StorageService.actionPoints) {
                         getListActionPoints(callback)
-                    }
                 },
                 getActionPointsLocal: function (callback) {
                     callback(actionPoints)

@@ -1,6 +1,6 @@
 angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-directive', 'hydromerta.services'])
 
-        .controller('MapController', function ($scope, mapboxMapId, mapboxAccessToken, SectorService, StorageService, ActionPointService, $rootScope) {
+        .controller('MapController', function ($scope, mapboxMapId, mapboxAccessToken, SectorService, StorageService, ActionPointService, $rootScope, $state) {
 
             var egoutIcon = {
                 type: "extraMarker",
@@ -90,7 +90,13 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
                             type: 'group',
                             name: 'Yverdon',
                             visible: false
-                        }
+                        },
+                        actions: {
+                    name: "Actions",
+                    type: "markercluster",
+                    visible: true
+                }
+                        
                     }
                 },
                 markers: {},
@@ -207,9 +213,11 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
                     var markers = []
                     angular.forEach(points, function (point, index) {
                         var marker = {
+                            layer:'actions',
                             lat: point.geometry.coordinates[1],
                             lng: point.geometry.coordinates[0],
                             properties: point.properties,
+                            id: point.id
                         }
 
                         if (point.properties.type == "hydrante") {
@@ -246,6 +254,12 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
                 }
 
             })
+            
+            $scope.$on('leafletDirectiveMarker.click', function (e, args) {
+                StorageService.setActionPoints(args.leafletEvent.target.options.properties);
+                StorageService.setActionId(args.leafletEvent.target.options.id);
+                $state.go('actionDetail');
+            });
 
 
 
@@ -279,7 +293,17 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
 
         })
 
-        .controller('actionController', function ($scope, mapboxMapId, mapboxAccessToken, $ionicLoading, $http) {
-
+        .controller('actionController', function ($scope, StorageService, $state) {
+                $scope.action = StorageService.actionPoints;
+                $scope.user = StorageService.user;
+                $scope.actionId = StorageService.actionId;
+                
+                $scope.backToMap = function() {
+                    $state.go('map')
+                }
+                
+                $scope.makeAction = function(actionId) {
+                    console.log(actionId)
+                }
 
         })
