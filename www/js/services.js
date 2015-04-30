@@ -9,8 +9,11 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
                 lastUpdateSector: store.get('lastUpdateSector'),
                 lastUpdateActionPoints: store.get('lastUpdateActionPoints'),
                 actionPoints: store.get('actionPoints'),
+                actionPoint: store.get('actionPoint'),
                 user: store.get('user'),
                 actionId: store.get('actionId'),
+                actionLat: store.get('actionLat'),
+                actionLng: store.get('actionLng'),
                 setToken: function (t) {
                     service.wsToken = t;
                     store.set('wsToken', t);
@@ -39,6 +42,14 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
                     service.actionPoints = data;
                     store.set('actionPoints', data);
                 },
+                unsetActionPoints: function (data) {
+                    service.actionPoints = null;
+                    store.remove('actionPoints');
+                },
+                setActionPoint: function (data) {
+                    service.actionPoint = data;
+                    store.set('actionPoint', data);
+                },
                 setUser: function (data) {
                     service.user = data;
                     store.set('user', data);
@@ -46,6 +57,14 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
                 setActionId: function (id) {
                     service.actionId = id;
                     store.set('actionId', id);
+                },
+                setActionLat: function (lat) {
+                    service.actionLat = lat;
+                    store.set('actionLat', lat);
+                },
+                setActionLng: function (lng) {
+                    service.actionLng = lng;
+                    store.set('actionLng', lng);
                 },
             };
             return service;
@@ -60,6 +79,7 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
                 connect: function (t) {
                     StorageService.setToken(t)
                     socket = io.connect("http://localhost:3000/", {
+//                    socket = io.connect("http://hydromerta.di-rosa.ch:3000/", {
                         query: 'token=' + t,
                         'force new connection': true
                     }).on('connect', function () {
@@ -99,8 +119,8 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
             var sectors = []
             function getListSectors(callback) {
                 SocketService.getSocket()
-                        .emit('get sectors')
-                        .on('sectors responce', function (data) {
+                        .emit('get sectors light')
+                        .on('sectors light responce', function (data) {
                             StorageService.setSectors(data)
                             StorageService.setLastUpdateSector(Date.now())
                             //console.log('get sectors')
@@ -144,29 +164,37 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
                 SocketService.getSocket()
                         .emit('get action point')
                         .on('action point responce', function (data) {
-                            //console.log('get sectors')
                             actionPoints = data
+                            StorageService.setActionPoints(actionPoints)
+                            StorageService.setLastUpdateActionPoints(Date.now())
                             callback(actionPoints)
                         })
             }
 
-            function remplaceActionPoints(newActionPoints) {
+            function remplaceActionPoints(newActionPoint) {
                 angular.forEach(actionPoints, function (oldActionPoint, key) {
-                    if (oldActionPoint.id == newActionPoints.id) {
-                        actionPoints[key] = newActionPoints
+                    if (oldActionPoint.id == newActionPoint.id) {
+                        actionPoints[key] = newActionPoint
                     }
                 })
-//                localStorageService.set('sectors', sectors)
-//                localStorageService.set('last update sectors', Date.now())
+
+                StorageService.setActionPoints(actionPoints)
+                StorageService.setLastUpdateActionPoints(Date.now())
             }
 
             var service = {
                 getActionPoints: function (callback) {
+                    if (!StorageService.actionPoints) {
                         getListActionPoints(callback)
+                    } else {
+                        actionPoints = StorageService.actionPoints;
+                        callback(actionPoints)
+                    }
+
                 },
                 getActionPointsLocal: function (callback) {
                     callback(actionPoints)
-                },
+                }
             }
             return service
 

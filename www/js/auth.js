@@ -7,6 +7,7 @@ angular.module('hydromerta.auth', ['angular-storage', 'hydromerta.services'])
             return {
                 login: function (data) {
                     return $http.post('http://localhost:3000/login', data)
+//                    return $http.post('http://hydromerta.di-rosa.ch:3000/login', data)
                 },
                 logout: function () {
                     var data = {}
@@ -17,9 +18,11 @@ angular.module('hydromerta.auth', ['angular-storage', 'hydromerta.services'])
                         }
                     }
                     return $http.post('http://localhost:3000/logout', data)
+//                    return $http.post('http://hydromerta.di-rosa.ch:3000/logout', data)
                 },
                 register: function (data) {
                     return $http.post('http://localhost:3000/register', data)
+//                    return $http.post('http://hydromerta.di-rosa.ch:3000/register', data)
                 }
 
             }
@@ -28,7 +31,7 @@ angular.module('hydromerta.auth', ['angular-storage', 'hydromerta.services'])
 
         .controller('loginController', function ($rootScope, $scope, HTTPAuhtService, SocketService, $state, StorageService) {
             $scope.user = {};
-
+            $scope.login = false;
 
             function logFunc(data) {
                 HTTPAuhtService.login(data).
@@ -47,7 +50,8 @@ angular.module('hydromerta.auth', ['angular-storage', 'hydromerta.services'])
             $scope.loginFunc = function () {
                 var data = {
                     username: $scope.user.username,
-                    password: $scope.user.password
+                    password: $scope.user.password,
+                    plateform: 'mobile'
                 }
                 logFunc(data)
             }
@@ -60,6 +64,7 @@ angular.module('hydromerta.auth', ['angular-storage', 'hydromerta.services'])
                     if (t) {
                         HTTPAuhtService.logout().
                                 success(function (data, status, headers, config) {
+                                    StorageService.unsetActionPoints();
                                      $state.go('login');
                                 }).
                                 error(function (data, status, headers, config) {
@@ -92,6 +97,6 @@ angular.module('hydromerta.auth', ['angular-storage', 'hydromerta.services'])
                     console.log('invalide confirm password')
                 }
             }
-            $scope.login = true;
+            
 
         })

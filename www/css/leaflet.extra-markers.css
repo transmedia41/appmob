@@ -1,20 +1,18 @@
 /* Version 1.0.1 */
 /* Marker setup */
 .extra-marker {
- // background: url('images/markers_default@2x.png') no-repeat 0 0;
-  width: 65px;
-  height: 76px;
+  //background: url('images/markers_default.png') no-repeat 0 0;
+  width: 35px;
+  height: 46px;
   position:absolute;
   left:0;
   top:0;
   display: block;
   text-align: center;
-  background-size: 540px 184px;
-  transform:scale(2,2);
 }
 
 .extra-marker-shadow {
-  background: url('images/markers_shadow.png') no-repeat 0 0;
+  //background: url('images/markers_shadow.png') no-repeat 0 0;
   width: 36px;
   height: 16px;
 }
@@ -23,11 +21,11 @@
 @media (min--moz-device-pixel-ratio: 1.5),(-o-min-device-pixel-ratio: 3/2),
 (-webkit-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5),(min-resolution: 1.5dppx) {
   .extra-marker {
-   // background-image: url('images/markers_default@2x.png');
+    //background-image: url('images/markers_default@2x.png');
     background-size: 540px 184px;
   }
   .extra-marker-shadow {
-  //  background-image: url('images/markers_shadow@2x.png');
+    //background-image: url('images/markers_shadow@2x.png');
     background-size: 35px 16px;
   }
 }
@@ -35,10 +33,13 @@
 /* Icons */
 .extra-marker i {
   color: #fff;
-  margin-top: 8px;
+  margin-top: 4.5px;
+  margin-left: 8px;
   display: inline-block;
   font-size: 20px;
-  transform: translate(0.5px,-51px);
+  position: absolute;
+  top: 0px;
+  left: 0px;
 }
 
 /* Semantic UI Fix */

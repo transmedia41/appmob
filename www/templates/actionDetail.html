@@ -1,12 +1,13 @@
 <ion-view ng-controller="actionController">
 	<ion-nav-bar class="bar-stable inside_header">
             <div id="header_wrap">
-			<img class="logo_hydro" src="../img/logo_header_@2x.png" alt="logo_hydro"/>
+			<img class="logo_hydro" src="img/logo_header_@2x.png" alt="logo_hydro"/>
 			<div class="xp_wrapper">
 		      <p class="xp">XP</p>
 		      <div class="loader_wrap">
-		         <div class="fill" data-xp="}}">
+		         <div class="fill" data-xp="100">
 		            <p>{{user.xp}}<span>pts</span></p>
+                       
 		         </div>
 		      </div>
 		      <p class="grade">{{user.level.rankName}} {{user.username}}</p>
@@ -49,7 +50,7 @@
 				</div> -->
 				<div class="attribute">
 					<div class="label">
-						<p>Baisse de l'influence</p>
+						<p>Baisse influence</p>
 					</div>
 					<div class="value">
 						<p>{{action.influence}}%</p>

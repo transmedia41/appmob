@@ -1,7 +1,7 @@
-angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-directive', 'hydromerta.services'])
+angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-directive', 'hydromerta.services', 'geolocation'])
 
         .controller('MapController', function ($scope, mapboxMapId, mapboxAccessToken, SectorService, StorageService, ActionPointService, $rootScope, $state, leafletData) {
-
+            var indexCircle = 0;
             var egoutIcon = {
                 type: "extraMarker",
                 extraClasses: "icon-bouche_egout"
@@ -204,9 +204,9 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
                 markerColor: function (cooldown) {
                     // lastperformed+coooldown > date.now()
                     if (cooldown <= 600) {
-                        return '../img/green.png';
+                        return 'img/green.png';
                     } else {
-                        return '../img/grey.png';
+                        return 'img/grey.png';
                     }
                     ;
 
@@ -216,52 +216,101 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
                     angular.forEach(points, function (point, index) {
                         var marker = {
                             layer: 'actions',
+                            id: point.id,
                             lat: point.geometry.coordinates[1],
                             lng: point.geometry.coordinates[0],
                             properties: point.properties,
-                            id: point.id
+                            icon: {}
                         }
-
-                        if (point.properties.type == "hydrante") {
-                            marker.icon = hydranteIcon
+                        switch (point.properties.type.toLowerCase()) {
+                            case 'hydrante':
+                                marker.icon.extraClasses = 'icon-hydrante'
+                                marker.icon.iconImg = 'images/hydrante.png'//hydrante
+                                break;
+                            case 'fontaine':
+                                marker.icon.extraClasses = 'icon-fontaine'
+                                marker.icon.iconImg = 'images/fontaine.png'
+                                break;
+                            case 'arrosage':
+                                marker.icon.extraClasses = 'icon-arrosage'
+                                marker.icon.iconImg = 'images/arrosage.png'
+                                break;
+                            case 'affiche':
+                                marker.icon.extraClasses = 'icon-affiche'
+                                marker.icon.iconImg = 'images/affiche.png'
+                                break;
+                            case 'toilettes':
+                                marker.icon.extraClasses = 'icon-toilettes'
+                                marker.icon.iconImg = 'images/toilettes.png'
+                                break;
+                            case 'bouche_egout':
+                                marker.icon.extraClasses = 'icon-bouche_egout'
+                                marker.icon.iconImg = 'images/bouche-egout.png'//'../images/bouche-egout.png'
+                                break;
+                            case 'dechet_lac':
+                                marker.icon.extraClasses = 'icon-dechet_lac'
+                                marker.icon.iconImg = 'images/dechet-lac.png'
+                                break;
                         }
-                        ;
-                        if (point.properties.type.toLowerCase() == "fontaine") {
-                            marker.icon = fontaineIcon
-                        }
-                        ;
-                        if (point.properties.type == "arrosage") {
-                            marker.icon = arrosageIcon
-                        }
-                        ;
-                        if (point.properties.type == "affiche") {
-                            marker.icon = afficheIcon
-                        }
-                        ;
-                        if (point.properties.type == "toilettes") {
-                            marker.icon = toiletteIcon
-                        }
-                        ;
-                        if (point.properties.type == "bouche_egout") {
-                            marker.icon = egoutIcon
-                        }
-                        ;
-                        marker.icon.iconImg = $scope.markerColor(point.properties.coolDown)
+                        marker.icon.type = 'extraMarker'
                         marker.icon.imgWidth = 32
                         marker.icon.imgHeight = 42
                         markers.push(marker)
+                        $scope.addRadiusToMap(point);
                     })
-
                     return markers
-                }
+                },
+                addRadiusToMap: function (point) {
+                    var shapes = [];
+                    var lng = point.geometry.coordinates[0];
+                    var lat = point.geometry.coordinates[1];
+                    circle = {
+                        type: "circle",
+                        layer: 'circles',
+                        dashArray: "7,10",
+                        clickable: false,
+                        radius: point.properties.actionRadius,
+                        latlngs: {
+                            lat: lat,
+                            lng: lng
+                        },
+                        color: 'green',
+                        weight: 2
+                    }
+                    $scope.paths["circle" + indexCircle] = circle;
+                    indexCircle++;
 
+                },
+                layersVisibility: function () {
+                    leafletData.getMap("leafletMap").then(function (map) {
+                        var zoom = map.getZoom();
+
+                        //circles visibility
+                        if (zoom >= 15) {
+                            $scope.layers.overlays.circles.visible = true;
+                        } else {
+                            $scope.layers.overlays.circles.visible = false;
+                        }
+
+
+                        ;
+                    })
+                },
             })
 
             $scope.$on('leafletDirectiveMarker.click', function (e, args) {
-                StorageService.setActionPoints(args.leafletEvent.target.options.properties);
+                StorageService.setActionPoint(args.leafletEvent.target.options.properties);
                 StorageService.setActionId(args.leafletEvent.target.options.id);
+                StorageService.setActionLat(args.leafletEvent.target.options.lat);
+                StorageService.setActionLng(args.leafletEvent.target.options.lng);
                 $state.go('actionDetail');
             });
+
+            $scope.$on("leafletDirectiveMap.zoomend", function (ev, featureSelected, leafletEvent) {
+                $scope.layersVisibility();
+            })
+
+
 
 
 
@@ -291,7 +340,6 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
             $rootScope.$on('new point available', function () {
                 ActionPointService.getActionPoints(function (data) {
                     $scope.markers = $scope.addMarkersToMap(data);
-                    console.log($scope.makers)
                 })
             })
 
@@ -299,17 +347,64 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
 
         })
 
-        .controller('actionController', function ($scope, StorageService, $state) {
-            $scope.action = StorageService.actionPoints;
+        .controller('actionController', function ($scope, StorageService, $state, geolocation, SocketService) {
+            $scope.action = StorageService.actionPoint;
             $scope.user = StorageService.user;
             $scope.actionId = StorageService.actionId;
+            $scope.sectors = StorageService.sectors;
+            $scope.coordinates = {};
+            $scope.sectorId;
+            
+            
+            
+            for (var i = 0; i < $scope.sectors.length ; i++) {
+                for (var j = 0; j < $scope.sectors[i].properties.actionsPoint.length; j++) {
+                    if ($scope.sectors[i].properties.actionsPoint[j] === $scope.actionId) {
+                        $scope.sectorId = $scope.sectors[i].id;
+                    }
+                }
+                
+            }
+            
+            
+
+
+
+
+
+
+
+            geolocation.getLocation().then(function (data) {
+                $scope.coordinates.latitude = data.coords.latitude;
+                $scope.coordinates.longitude = data.coords.longitude;
+            })
+
+//            $scope.isUserInCircle = function () {
+//                
+//               return geolib.isPointInCircle(
+//                        {latitude: $scope.coordinates.latitude, longitude: $scope.coordinates.longitude},
+//                        {latitude: StorageService.actionLat, longitude: StorageService.actionLng},
+//                500
+//                        )
+//            }
 
             $scope.backToMap = function () {
                 $state.go('map')
             }
 
             $scope.makeAction = function (actionId) {
-                console.log(actionId)
+                var data = {
+                    id: actionId,
+                    sector_id: $scope.sectorId,
+                    position: $scope.coordinates
+                };
+
+
+
+//                SocketService.getSocket()
+//                        .emit('make action point', data)
+
+
             }
 
         })

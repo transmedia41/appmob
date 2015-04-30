@@ -5,9 +5,9 @@
 </ion-nav-bar>
     <ion-content class="padding">
         <div class="registerForm">
-           <ion-toggle class="button switch_form state-{{login}}" toggle-class="toggle-light" ng-click="login=!login"><span ng-if="!login">Register</span><span ng-if="login">Login</span></ion-toggle>
-            <img src="../img/logo_header_@2x.png" alt="logo_hydro"/>
-             <form name="loginForm" ng-if="login" ng-controller="loginController">
+           <ion-toggle class="button switch_form state-{{login}}" toggle-class="toggle-light" ng-click="login=!login"><span ng-if="login">Register</span><span ng-if="!login">Login</span></ion-toggle>
+            <img src="img/logo_header_@2x.png" alt="logo_hydro"/>
+             <form name="loginForm" ng-if="!login" ng-controller="loginController">
                 <div class="list">
                     <label class="item item-input">
                         <input type="text" class="form-control" ng-model="user.username" id="exampleInputEmail1" placeholder="Enter username">
@@ -17,7 +17,7 @@
                         </div>
 
                         <!-- Display an error message here, above the submit button, if an error occurred. -->
-                        <p ng-if="error" class="error">{{ error}}</p>
+                        <p ng-if="error" class="error">{{error}}</p>
 
                         <!--
                           The submit button.
@@ -26,7 +26,7 @@
                         -->
                         <button type="submit" class="button button-full button-login" ng-click="loginFunc()">login</button>
                         </form>
-            <form  name="registerForm" ng-if="!login" ng-controller="registerController">
+            <form  name="registerForm" ng-if="login" ng-controller="registerController">
 
 
                 <div class="list">
