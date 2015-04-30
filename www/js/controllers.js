@@ -1,6 +1,6 @@
 angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-directive', 'hydromerta.services', 'geolocation'])
 
-        .controller('MapController', function ($scope, mapboxMapId, mapboxAccessToken, SectorService, StorageService, ActionPointService, $rootScope, $state, leafletData) {
+        .controller('MapController', function ($scope, mapboxMapId, mapboxAccessToken, SectorService, StorageService, ActionPointService, $rootScope, $state, leafletData, $timeout) {
             var indexCircle = 0;
             var egoutIcon = {
                 type: "extraMarker",
@@ -310,13 +310,6 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
                 $scope.layersVisibility();
             })
 
-
-
-
-
-
-
-
             ActionPointService.getActionPoints(function (data) {
                 leafletData.getMap().then(function (map) {
                     if (map._controlCorners.bottomleft.childElementCount === 0) {
@@ -331,14 +324,39 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
 
             })
 
-
+            $scope.progressBar = {
+                transition: "width 1s ease-in-out",
+                width: "0%"
+            }
 
             $rootScope.$on('user responce', function () {
                 $scope.user = StorageService.user;
+                updateNavBar();
             })
             $rootScope.$on('user update', function () {
                 $scope.user = StorageService.user;
+                updateNavBar();
             })
+
+            function updateNavBar() {
+                if ($scope.user.level.level == 11) {
+                    $timeout(function () {
+                        $scope.progressBar = {
+                            transition: "width 1s ease-in-out",
+                            width: "100%"
+                        }
+                    }, 200)
+                } else {
+                    $timeout(function () {
+                        $scope.progressBar = {
+                            transition: "width 1s ease-in-out",
+                            width: ($scope.user.xp - $scope.user.level.xp) / ($scope.user.level.xpMax - $scope.user.level.xp) * 100 + "%"
+                        }
+                    }, 200)
+                }
+
+                $scope.$apply();
+            }
 
             $rootScope.$on('new point available', function () {
                 ActionPointService.getActionPoints(function (data) {
@@ -362,6 +380,27 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
             $scope.sectors = StorageService.sectors;
             $scope.coordinates = {};
             $scope.sectorId;
+            updateNavBar();
+            
+            function updateNavBar() {
+                if ($scope.user.level.level == 11) {
+                    $timeout(function () {
+                        $scope.progressBar = {
+                            transition: "width 1s ease-in-out",
+                            width: "100%"
+                        }
+                    }, 200)
+                } else {
+                    $timeout(function () {
+                        $scope.progressBar = {
+                            transition: "width 1s ease-in-out",
+                            width: ($scope.user.xp - $scope.user.level.xp) / ($scope.user.level.xpMax - $scope.user.level.xp) * 100 + "%"
+                        }
+                    }, 200)
+                }
+
+                $scope.$apply();
+            }
 
 
 
@@ -408,17 +447,16 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
                     sector_id: $scope.sectorId,
                     position: $scope.coordinates
                 };
-
-
-
-
-
-
+                console.log(StorageService.actionId)
 
                 SocketService.getSocket().emit('make action point', data)
 
                 SocketService.getSocket().on('action point performed', function (data) {
                     remplaceActionPoints(data)
+
+                    SocketService.getSocket().on('new rank', function (data) {
+                        alert(data)
+                    })
 
                     SocketService.getSocket().on('user update', function (data) {
                         StorageService.setUser(data)
@@ -431,12 +469,12 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
 
 
                 SocketService.getSocket().on('action in cooldown', function (data) {
-                    alert('This action is in cooldown come back later');
+                    alert('Cette action est en cooldown, revenez plus tard');
                     $state.go('map')
                 })
-                
+
                 SocketService.getSocket().on('not near action', function (data) {
-                    alert('You are not close enough from the point');
+                    alert("Vous êtes trop éloignés du point d'action");
                     $state.go('map')
                 })
 

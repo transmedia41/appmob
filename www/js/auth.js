@@ -56,6 +56,7 @@ angular.module('hydromerta.auth', ['angular-storage', 'hydromerta.services'])
                 logFunc(data)
             }
             $rootScope.$on('register', function (e, data) {
+                data.plateform = 'mobile'
                 logFunc(data)
             })
 
