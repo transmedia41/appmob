@@ -22,7 +22,7 @@ function saveConfig(environment) {
     gulp.src(['constants.js'])
 
             // Replace all occurrences of @apiUrl@.
-            //.pipe(replace(/@apiUrl@/g, config.apiUrl))
+            .pipe(replace(/@apiUrl@/g, config.apiUrl))
             .pipe(replace(/@mapboxMapId@/, config.mapboxMapId))
             .pipe(replace(/@mapboxAccessToken@/, config.mapboxAccessToken))
 
@@ -74,4 +74,8 @@ gulp.task('config-development', function(){
 
 gulp.task('config-production', function(){
   saveConfig('production');
+});
+
+gulp.task('config-dev-local', function(){
+  saveConfig('dev-local');
 });

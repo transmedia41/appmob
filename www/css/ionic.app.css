@@ -7619,7 +7619,7 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
-.leaflet-control {
+.leaflet-control-layers.leaflet-control {
   visibility: hidden; }
 
 @font-face {
