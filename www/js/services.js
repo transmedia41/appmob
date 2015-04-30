@@ -148,17 +148,24 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
 
         })
 
+
+
         .service('ActionPointService', function ($rootScope, StorageService, SocketService) {
 
             var actionPoints = []
 
             $rootScope.$on('connection', function (e) {
                 SocketService.getSocket().on('action point performed', function (data) {
-                    //console.log(data)
+                    console.log('salut')
                     remplaceActionPoints(data)
                     $rootScope.$emit('new point available')
                 })
+
+
+
             })
+            
+
 
             function getListActionPoints(callback) {
                 SocketService.getSocket()
@@ -170,6 +177,8 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
                             callback(actionPoints)
                         })
             }
+
+
 
             function remplaceActionPoints(newActionPoint) {
                 angular.forEach(actionPoints, function (oldActionPoint, key) {

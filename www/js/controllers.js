@@ -336,9 +336,17 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
             $rootScope.$on('user responce', function () {
                 $scope.user = StorageService.user;
             })
+            $rootScope.$on('user update', function () {
+                $scope.user = StorageService.user;
+            })
 
             $rootScope.$on('new point available', function () {
                 ActionPointService.getActionPoints(function (data) {
+                    leafletData.getMap().then(function (map) {
+                        if (map._controlCorners.bottomleft.childElementCount === 0) {
+                            L.control.locate({position: 'bottomleft', follow: true, locateOptions: {enableHighAccuracy: true}}).addTo(map);
+                        }
+                    });
                     $scope.markers = $scope.addMarkersToMap(data);
                 })
             })
@@ -347,26 +355,25 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
 
         })
 
-        .controller('actionController', function ($scope, StorageService, $state, geolocation, SocketService) {
+        .controller('actionController', function ($scope, StorageService, $state, geolocation, SocketService, $rootScope) {
             $scope.action = StorageService.actionPoint;
             $scope.user = StorageService.user;
             $scope.actionId = StorageService.actionId;
             $scope.sectors = StorageService.sectors;
             $scope.coordinates = {};
             $scope.sectorId;
-            
-            
-            
-            for (var i = 0; i < $scope.sectors.length ; i++) {
+
+
+
+
+            for (var i = 0; i < $scope.sectors.length; i++) {
                 for (var j = 0; j < $scope.sectors[i].properties.actionsPoint.length; j++) {
                     if ($scope.sectors[i].properties.actionsPoint[j] === $scope.actionId) {
                         $scope.sectorId = $scope.sectors[i].id;
                     }
                 }
-                
+
             }
-            
-            
 
 
 
@@ -374,7 +381,9 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
 
 
 
-            geolocation.getLocation().then(function (data) {
+
+
+            geolocation.getLocation({maximumAge: 3000, timeout: 5000, enableHighAccuracy: true}).then(function (data) {
                 $scope.coordinates.latitude = data.coords.latitude;
                 $scope.coordinates.longitude = data.coords.longitude;
             })
@@ -393,6 +402,7 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
             }
 
             $scope.makeAction = function (actionId) {
+                var actionPoints = StorageService.actionPoints;
                 var data = {
                     id: actionId,
                     sector_id: $scope.sectorId,
@@ -401,10 +411,55 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
 
 
 
-//                SocketService.getSocket()
-//                        .emit('make action point', data)
+
+
+
+
+                SocketService.getSocket().emit('make action point', data)
+
+                SocketService.getSocket().on('action point performed', function (data) {
+                    remplaceActionPoints(data)
+
+                    SocketService.getSocket().on('user update', function (data) {
+                        StorageService.setUser(data)
+                        $rootScope.$emit('user update')
+                        $rootScope.$emit('new point available')
+                        $state.go('map')
+                    })
+                })
+
+
+
+                SocketService.getSocket().on('action in cooldown', function (data) {
+                    alert('This action is in cooldown come back later');
+                    $state.go('map')
+                })
+                
+                SocketService.getSocket().on('not near action', function (data) {
+                    alert('You are not close enough from the point');
+                    $state.go('map')
+                })
+
+                function remplaceActionPoints(newActionPoint) {
+                    angular.forEach(actionPoints, function (oldActionPoint, key) {
+
+                        if (oldActionPoint.id === newActionPoint.id) {
+                            console.log('newActionPoint')
+                            actionPoints[key] = newActionPoint
+
+                        }
+                    })
+
+
+                    StorageService.setActionPoints(actionPoints)
+                    StorageService.setLastUpdateActionPoints(Date.now())
+                }
+
+
 
 
             }
+
+
 
         })
