@@ -373,16 +373,17 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
 
         })
 
-        .controller('actionController', function ($scope, StorageService, $state, geolocation, SocketService, $rootScope) {
+        .controller('actionController', function ($scope, StorageService, $state, geolocation, SocketService, $rootScope, $timeout) {
+
+
+
             $scope.action = StorageService.actionPoint;
             $scope.user = StorageService.user;
             $scope.actionId = StorageService.actionId;
             $scope.sectors = StorageService.sectors;
             $scope.coordinates = {};
             $scope.sectorId;
-            updateNavBar();
-            
-            function updateNavBar() {
+  
                 if ($scope.user.level.level == 11) {
                     $timeout(function () {
                         $scope.progressBar = {
@@ -399,8 +400,11 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
                     }, 200)
                 }
 
-                $scope.$apply();
-            }
+          
+          
+            
+
+
 
 
 
