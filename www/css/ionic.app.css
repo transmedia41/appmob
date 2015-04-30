@@ -7802,7 +7802,6 @@ ion-view {
 .inside_header #header_wrap .xp_wrapper .loader_wrap .fill {
     background: #eeece1;
     height: 100%;
-    width: 30%;
     position: relative; }
 .inside_header #header_wrap .xp_wrapper .loader_wrap .fill p {
     color: #06323c;
