@@ -6,8 +6,8 @@ angular.module('hydromerta.auth', ['angular-storage', 'hydromerta.services'])
 
             return {
                 login: function (data) {
-                    return $http.post('http://localhost:3000/login', data)
-//                    return $http.post('http://hydromerta.di-rosa.ch:3000/login', data)
+//                    return $http.post('http://localhost:3000/login', data)
+                    return $http.post('http://hydromerta.di-rosa.ch:3000/login', data)
                 },
                 logout: function () {
                     var data = {}
@@ -17,12 +17,12 @@ angular.module('hydromerta.auth', ['angular-storage', 'hydromerta.services'])
                             token: t
                         }
                     }
-                    return $http.post('http://localhost:3000/logout', data)
-//                    return $http.post('http://hydromerta.di-rosa.ch:3000/logout', data)
+//                    return $http.post('http://localhost:3000/logout', data)
+                    return $http.post('http://hydromerta.di-rosa.ch:3000/logout', data)
                 },
                 register: function (data) {
-                    return $http.post('http://localhost:3000/register', data)
-//                    return $http.post('http://hydromerta.di-rosa.ch:3000/register', data)
+//                    return $http.post('http://localhost:3000/register', data)
+                    return $http.post('http://hydromerta.di-rosa.ch:3000/register', data)
                 }
 
             }

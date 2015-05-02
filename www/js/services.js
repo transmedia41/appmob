@@ -78,8 +78,8 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
             var socketService = {
                 connect: function (t) {
                     StorageService.setToken(t)
-                    socket = io.connect("http://localhost:3000/", {
-//                    socket = io.connect("http://hydromerta.di-rosa.ch:3000/", {
+//                    socket = io.connect("http://localhost:3000/", {
+                    socket = io.connect("http://hydromerta.di-rosa.ch:3000/", {
                         query: 'token=' + t,
                         'force new connection': true
                     }).on('connect', function () {

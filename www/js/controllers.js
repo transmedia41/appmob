@@ -1,6 +1,13 @@
 angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-directive', 'hydromerta.services', 'geolocation'])
 
-        .controller('MapController', function ($scope, mapboxMapId, mapboxAccessToken, SectorService, StorageService, ActionPointService, $rootScope, $state, leafletData, $timeout) {
+        .controller('MapController', function ($scope, mapboxMapId, mapboxAccessToken, SectorService, HTTPAuhtService, SocketService, StorageService, ActionPointService, $rootScope, $state, leafletData, $timeout) {
+                if (SocketService.getSocket() === undefined) {
+                    
+                    SocketService.connect(StorageService.wsToken);
+                    
+ 
+                }
+
             var indexCircle = 0;
             var egoutIcon = {
                 type: "extraMarker",
