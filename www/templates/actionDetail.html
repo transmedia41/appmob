@@ -1,4 +1,4 @@
-<ion-view ng-controller="actionController">
+<ion-view>
 	<ion-nav-bar class="bar-stable inside_header">
             <div id="header_wrap">
 			<img class="logo_hydro" src="img/logo_header_@2x.png" alt="logo_hydro"/>
@@ -65,7 +65,7 @@
 					</div>
 				</div>
 			</div>
-			<button class="button button-full button-action" ng-click="makeAction(actionId)">effectuer action</button>
+			<button class="button button-full button-action" ng-controller="makeActionController" ng-click="makeAction()">effectuer action</button>
 		</div>
 	</ion-content>
 </ion-view>

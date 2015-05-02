@@ -71,7 +71,7 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
         }
         )
 
-        .service('SocketService', function ($rootScope, StorageService) {
+        .service('SocketService', function ($rootScope, StorageService, $ionicPopup, $state) {
 
             var socket
 
@@ -92,6 +92,81 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
                         socket.on('user responce 404', function () {
                             console.log('user responce 404')
                         })
+                        socket.on('not near action', function () {
+                            var popup = $ionicPopup.alert({
+                                title: 'Vous êtes trop éloignés du point d\'action! Tentez de vous en approcher le plus que possible...',
+                                buttons: [{
+                                        text: 'Cancel',
+                                        type: 'button-default',
+                                        onTap: function (e) {
+                                            popup.close()
+                                            e.preventDefault();
+                                        }
+                                    },
+                                ]
+                            });
+                        })
+
+                        socket.on('action in cooldown', function () {
+                            var date = new Date();
+                            var actionPoint = StorageService.actionPoint;
+                            var datePerformed = new Date(actionPoint.lastPerformed * 1000);
+                            datePerformed.setSeconds(datePerformed.getSeconds() + 600);
+                            var popup = $ionicPopup.alert({
+                                title: 'Cette action est en cooldown! Revenez aux alentours de ' + datePerformed.getHours() + ':' + datePerformed.getMinutes() + '...',
+                                buttons: [{
+                                        text: 'OK',
+                                        type: 'button-default',
+                                        onTap: function (e) {
+
+                                            popup.close()
+                                            e.preventDefault();
+                                        }
+                                    },
+                                ]
+                            });
+                        })
+
+                        socket.on('user update', function (data) {
+                            StorageService.setUser(data)
+                            $rootScope.$emit('user update')
+                        })
+
+                        socket.on('new rank', function (data) {
+                            var popup = $ionicPopup.alert({
+                                title: data,
+                                buttons: [{
+                                        text: 'OK',
+                                        type: 'button-default',
+                                        onTap: function (e) {
+
+                                            popup.close()
+                                            e.preventDefault();
+                                        }
+                                    },
+                                ]
+                            });
+                        })
+
+                        socket.on('action point performed', function (data) {
+                            var actionPoints = StorageService.actionPoints;
+                            angular.forEach(actionPoints, function (oldActionPoint, key) {
+
+                                if (oldActionPoint.id === data.id) {
+                                    console.log('newActionPoint')
+                                    actionPoints[key] = data
+
+                                }
+                            })
+
+
+                            StorageService.setActionPoints(actionPoints)
+                            StorageService.setLastUpdateActionPoints(Date.now())
+                            $rootScope.$emit('new point available')
+                            $state.go('map');
+                        })
+
+
                     }).on('disconnect', function () {
                         socket.close()
                         StorageService.unsetToken()
@@ -164,7 +239,7 @@ angular.module('hydromerta.services', ['hydromerta.constants', 'angular-storage'
 
 
             })
-            
+
 
 
             function getListActionPoints(callback) {

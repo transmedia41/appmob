@@ -303,7 +303,8 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
                 StorageService.setActionId(args.leafletEvent.target.options.id);
                 StorageService.setActionLat(args.leafletEvent.target.options.lat);
                 StorageService.setActionLng(args.leafletEvent.target.options.lng);
-                $state.go('actionDetail');
+                console.log(args.leafletEvent.target.options.properties);
+                $state.transitionTo('actionDetail', {actionId: StorageService.actionId}, {reload: true});
             });
 
             $scope.$on("leafletDirectiveMap.zoomend", function (ev, featureSelected, leafletEvent) {
@@ -371,42 +372,50 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
 
 
 
+
+
         })
 
         .controller('actionController', function ($scope, StorageService, $state, geolocation, SocketService, $rootScope, $timeout) {
-
-
-
             $scope.action = StorageService.actionPoint;
             $scope.user = StorageService.user;
+
+            $scope.backToMap = function () {
+                $state.go('map')
+            }
+
+            if ($scope.user.level.level == 11) {
+                $timeout(function () {
+                    $scope.progressBar = {
+                        transition: "width 1s ease-in-out",
+                        width: "100%"
+                    }
+                }, 200)
+            } else {
+                $timeout(function () {
+                    $scope.progressBar = {
+                        transition: "width 1s ease-in-out",
+                        width: ($scope.user.xp - $scope.user.level.xp) / ($scope.user.level.xpMax - $scope.user.level.xp) * 100 + "%"
+                    }
+                }, 200)
+            }
+
+
+
+
+
+
+
+
+
+        })
+
+        .controller('makeActionController', function ($scope, StorageService, $state, geolocation, SocketService, $rootScope, $ionicPopup) {
+
             $scope.actionId = StorageService.actionId;
             $scope.sectors = StorageService.sectors;
             $scope.coordinates = {};
             $scope.sectorId;
-  
-                if ($scope.user.level.level == 11) {
-                    $timeout(function () {
-                        $scope.progressBar = {
-                            transition: "width 1s ease-in-out",
-                            width: "100%"
-                        }
-                    }, 200)
-                } else {
-                    $timeout(function () {
-                        $scope.progressBar = {
-                            transition: "width 1s ease-in-out",
-                            width: ($scope.user.xp - $scope.user.level.xp) / ($scope.user.level.xpMax - $scope.user.level.xp) * 100 + "%"
-                        }
-                    }, 200)
-                }
-
-          
-          
-            
-
-
-
-
 
 
             for (var i = 0; i < $scope.sectors.length; i++) {
@@ -418,89 +427,56 @@ angular.module('hydromerta.controllers', ['hydromerta.constants', 'leaflet-direc
 
             }
 
-
-
-
-
-
-
-
-
             geolocation.getLocation({maximumAge: 3000, timeout: 5000, enableHighAccuracy: true}).then(function (data) {
                 $scope.coordinates.latitude = data.coords.latitude;
                 $scope.coordinates.longitude = data.coords.longitude;
             })
 
-//            $scope.isUserInCircle = function () {
-//                
-//               return geolib.isPointInCircle(
-//                        {latitude: $scope.coordinates.latitude, longitude: $scope.coordinates.longitude},
-//                        {latitude: StorageService.actionLat, longitude: StorageService.actionLng},
-//                500
-//                        )
-//            }
+            $scope.makeAction = function () {
 
-            $scope.backToMap = function () {
-                $state.go('map')
-            }
+                if ($scope.coordinates.latitude === undefined) {
+                    var popup = $ionicPopup.alert({
+                        title: 'Vous devez activer la géolocalisation afin de pouvoir jouer!',
+                        buttons: [{
+                                text: 'Cancel',
+                                type: 'button-default',
+                                onTap: function (e) {
 
-            $scope.makeAction = function (actionId) {
-                var actionPoints = StorageService.actionPoints;
-                var data = {
-                    id: actionId,
-                    sector_id: $scope.sectorId,
-                    position: $scope.coordinates
-                };
-                console.log(StorageService.actionId)
+                                    popup.close()
+                                    $state.go('map')
+                                    e.preventDefault();
+                                }
+                            },
+                        ]
+                    });
+                } else {
+                    var data = {
+                        id: $scope.actionId,
+                        sector_id: $scope.sectorId,
+                        position: $scope.coordinates
+                    };
 
-                SocketService.getSocket().emit('make action point', data)
-
-                SocketService.getSocket().on('action point performed', function (data) {
-                    remplaceActionPoints(data)
-
-                    SocketService.getSocket().on('new rank', function (data) {
-                        alert(data)
-                    })
-
-                    SocketService.getSocket().on('user update', function (data) {
-                        StorageService.setUser(data)
-                        $rootScope.$emit('user update')
-                        $rootScope.$emit('new point available')
-                        $state.go('map')
-                    })
-                })
-
-
-
-                SocketService.getSocket().on('action in cooldown', function (data) {
-                    alert('Cette action est en cooldown, revenez plus tard');
-                    $state.go('map')
-                })
-
-                SocketService.getSocket().on('not near action', function (data) {
-                    alert("Vous êtes trop éloignés du point d'action");
-                    $state.go('map')
-                })
-
-                function remplaceActionPoints(newActionPoint) {
-                    angular.forEach(actionPoints, function (oldActionPoint, key) {
-
-                        if (oldActionPoint.id === newActionPoint.id) {
-                            console.log('newActionPoint')
-                            actionPoints[key] = newActionPoint
-
-                        }
-                    })
-
-
-                    StorageService.setActionPoints(actionPoints)
-                    StorageService.setLastUpdateActionPoints(Date.now())
+                    SocketService.getSocket().emit('make action point', data)
                 }
 
 
 
-
             }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -7,7 +7,6 @@ angular.module('hydromerta')
                         url: '/map',
                         templateUrl: 'templates/map.html',
                         controller: 'MapController'
-
                     })
 
 
@@ -19,9 +18,10 @@ angular.module('hydromerta')
 
 
                     .state('actionDetail', {
-                        url: '/action',
+                        url: '/map/action/:actionId',
                         templateUrl: 'templates/actionDetail.html',
-                        controller: 'actionController'
+                        controller: 'actionController',
+                        cache: false
                     })
             $urlRouterProvider.otherwise(function ($injector) {
                 $injector.get('$state').go('map'); // Go to the new issue tab by default.
